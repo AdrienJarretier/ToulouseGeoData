@@ -1,7 +1,7 @@
 {
   "name": "web-map-geo-data",
   "version": "0.1.0",
-  "description": "display geo referenced open data on a map",
+  "description": "display geo referenced open data on a map using Leaflet and SQlite",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +10,6 @@
     "type": "git",
     "url": "\"\""
   },
-  "author": "",
+  "author": "Houseaux laurie <lma.houseaux@gmail.com>, Jarretier Adrien <jarretier.adrien@gmail.com>",
   "license": "GPL-3.0"
 }
