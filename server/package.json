@@ -11,5 +11,8 @@
     "url": "\"\""
   },
   "author": "Houseaux laurie <lma.houseaux@gmail.com>, Jarretier Adrien <jarretier.adrien@gmail.com>",
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "dependencies": {
+    "sqlite3": "^3.1.8"
+  }
 }
