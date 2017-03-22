@@ -1,39 +1,39 @@
 var sqlite3 = require('sqlite3').verbose();
 
-const parse = require('csv-parse');
+const parse = require('csv-parse/lib/sync');
 
-const readline = require('readline');
 const fs = require('fs');
-
-const rl = readline.createInterface({
-    input: fs.createReadStream('patinoires.csv')
-});
-
-rl.on('line', (line) => {
-    console.log(line)
-});
-
-rl.on('close', () => {
-    console.log("end")
-});
-
-
-
-
 
 var db = new sqlite3.Database('firstTestDb.db');
 
 db.serialize(function() {
 
-    //     db.run("CREATE VIRTUAL TABLE demo_index USING rtree(
-    //    id,              -- Integer primary key
-    //    minX, maxX,      -- Minimum and maximum X coordinate
-    //    minY, maxY       -- Minimum and maximum Y coordinate
-    // )");
+    db.run("CREATE TABLE IF NOT EXISTS patinoires (id INTEGER PRIMARY KEY, geo_point TEXT, nom_complet TEXT, adresse TEXT, telephone TEXT)");
 
-    db.run("CREATE TABLE IF NOT EXISTS patinoires (x REAL, y REAL, nom_complet TEXT, adresse TEXT, telephone TEXT)");
+    const csvFile = fs.openSync('patinoires.csv', 'r');
 
+    const csvContent = fs.readFileSync(csvFile);
 
+    fs.closeSync(csvFile);
+
+    var dataArray = parse(csvContent, { delimiter: ";" });
+
+    console.log(dataArray.length);
+
+    var stmt = db.prepare("INSERT INTO patinoires VALUES (?, ?, ?, ?, ?)");
+
+    for(var i = 1; i<dataArray.length; ++i) {
+
+        console.log("--------------------- " + i + " ---------------------");
+        console.log("Geo Point : " + dataArray[i][0]);
+        console.log("Geo Shape : " + dataArray[i][1]);
+        console.log("nom_complet : " + dataArray[i][2]);
+        console.log("adresse : " + dataArray[i][3]);
+        console.log("telephone : " + dataArray[i][4]);
+
+        stmt.run(i, dataArray[i][0], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
+    }
+    stmt.finalize();
 
     db.all("SELECT * FROM patinoires", function(err, rows) {
         console.log(rows);
