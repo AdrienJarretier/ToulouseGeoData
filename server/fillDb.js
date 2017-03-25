@@ -1,4 +1,4 @@
-var sqlite3 = require('sqlite3').verbose();
+const sqlite3 = require('sqlite3').verbose();
 
 const parse = require('csv-parse/lib/sync');
 
@@ -22,7 +22,7 @@ db.serialize(function() {
 
     var stmt = db.prepare("INSERT INTO patinoires VALUES (?, ?, ?, ?, ?)");
 
-    for(var i = 1; i<dataArray.length; ++i) {
+    for (var i = 1; i < dataArray.length; ++i) {
 
         console.log("--------------------- " + i + " ---------------------");
         console.log("Geo Point : " + dataArray[i][0]);
