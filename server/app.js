@@ -20,9 +20,9 @@ app.get('/patinoires', function(req, res) {
         db.all("SELECT * FROM patinoires", function(err, rows) {
 
             for (var i = 0; i < rows.length; ++i) {
-                rows[i].coordinates = [rows[i].long, rows[i].lat];
+                rows[i].coordinates = [rows[i].lng, rows[i].lat];
 
-                delete rows[i].long;
+                delete rows[i].lng;
                 delete rows[i].lat;
             }
             console.log(rows);

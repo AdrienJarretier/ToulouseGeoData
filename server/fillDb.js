@@ -8,7 +8,7 @@ var db = new sqlite3.Database('firstTestDb.db');
 
 db.serialize(function() {
 
-    db.run("CREATE TABLE IF NOT EXISTS patinoires (id INTEGER PRIMARY KEY, type TEXT, long REAL, lat REAL, nom_complet TEXT, adresse TEXT, telephone TEXT)");
+    db.run("CREATE TABLE IF NOT EXISTS patinoires (id INTEGER PRIMARY KEY, type TEXT, lng REAL, lat REAL, nom_complet TEXT, adresse TEXT, telephone TEXT)");
 
     const csvFile = fs.openSync('patinoires.csv', 'r');
 
