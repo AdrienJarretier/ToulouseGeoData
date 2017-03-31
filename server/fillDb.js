@@ -4,13 +4,13 @@ const parse = require('csv-parse/lib/sync');
 
 const fs = require('fs');
 
-var db = new sqlite3.Database('firstTestDb.db');
+var db = new sqlite3.Database('geoData.db');
 
 db.serialize(function() {
 
     db.run("CREATE TABLE IF NOT EXISTS patinoires (id INTEGER PRIMARY KEY, type TEXT, lng REAL, lat REAL, nom_complet TEXT, adresse TEXT, telephone TEXT)");
 
-    const csvFile = fs.openSync('patinoires.csv', 'r');
+    const csvFile = fs.openSync('csvData/patinoires.csv', 'r');
 
     const csvContent = fs.readFileSync(csvFile);
 
