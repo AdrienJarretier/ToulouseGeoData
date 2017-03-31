@@ -1,3 +1,11 @@
 quand on recupere le projet, la base de donnees est vide et si on lance node on a "undefined"
 rename app.js to index.js
 change title
+
+in
+readme requirement versions :
+nodejs : v 6.10.0 (lts)
+npm : v 4.4.1
+
+
+commands npm install and no fillDb before lauching app with `node .`
