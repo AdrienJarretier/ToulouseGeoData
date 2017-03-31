@@ -33,6 +33,7 @@
             success: function(data, textStatus, jqXHR) {
 
                 console.log(data);
+                L.geoJSON(data).addTo(mymap);
 
             },
             error: function(jqXHR, textStatus, errorThrown) {

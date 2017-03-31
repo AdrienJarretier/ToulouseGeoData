@@ -9,3 +9,5 @@ npm : v 4.4.1
 
 
 commands npm install and no fillDb before lauching app with `node .`
+
+config file to set server address
