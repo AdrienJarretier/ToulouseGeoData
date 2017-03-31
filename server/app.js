@@ -1,13 +1,39 @@
 const sqlite3 = require('sqlite3').verbose();
+const express = require('express');
+var app = express();
 
-var db = new sqlite3.Database('firstTestDb.db');
+const config = { port: 9226 };
 
-db.serialize(function() {
+app.use(express.static(__dirname + '/../client'));
 
-    db.all("SELECT * FROM patinoires", function(err, rows) {
-        console.log(rows);
-    });
 
+app.get('/', function(req, res) {
+    res.sendfile('index.html');
 });
 
-db.close();
+app.get('/patinoires', function(req, res) {
+
+    var db = new sqlite3.Database('firstTestDb.db');
+
+    db.serialize(function() {
+
+        db.all("SELECT * FROM patinoires", function(err, rows) {
+
+            for (var i = 0; i < rows.length; ++i) {
+                rows[i].coordinates = [rows[i].long, rows[i].lat];
+
+                delete rows[i].long;
+                delete rows[i].lat;
+            }
+            console.log(rows);
+            res.send(rows);
+        });
+
+    });
+
+    db.close();
+});
+
+app.listen(config.port, function() {
+    console.log('listening on *:' + config.port);
+});
