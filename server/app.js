@@ -18,7 +18,7 @@ app.get('/patinoires', function(req, res) {
     db.serialize(function() {
 
         db.all("SELECT * FROM patinoires", function(err, rows) {
-            console.log(rows);
+            res.send(rows);
         });
 
     });
