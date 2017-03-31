@@ -18,6 +18,14 @@ app.get('/patinoires', function(req, res) {
     db.serialize(function() {
 
         db.all("SELECT * FROM patinoires", function(err, rows) {
+
+            for (var i = 0; i < rows.length; ++i) {
+                rows[i].coordinates = [rows[i].long, rows[i].lat];
+
+                delete rows[i].long;
+                delete rows[i].lat;
+            }
+            console.log(rows);
             res.send(rows);
         });
 
