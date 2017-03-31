@@ -29,7 +29,7 @@
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: "127.0.0.1:9226/patinoires",
+            url: "patinoires",
             success: function(data, textStatus, jqXHR) {
 
                 console.log(data);
@@ -69,23 +69,23 @@
         //     }]
         // };
 
-        var patinoires = [{
-            type: "Point",
-            id: 1,
-            coordinates: '43.6239460599, 1.47872035332',
-            nom_complet: 'PATINOIRE ALEX JANY',
-            adresse: 'chemin du Verdon 31500 Toulouse',
-            telephone: '05 81 91 78 56'
-        }, {
-            type: "Point",
-            id: 2,
-            coordinates: '43.5677782425, 1.453293811',
-            nom_complet: 'PATINOIRE BELLEVUE',
-            adresse: '69ter route de Narbonne 31000 TOULOUSE',
-            telephone: '05 61 52 93 53'
-        }];
+        // var patinoires = [{
+        //     type: "Point",
+        //     id: 1,
+        //     coordinates: '43.6239460599, 1.47872035332',
+        //     nom_complet: 'PATINOIRE ALEX JANY',
+        //     adresse: 'chemin du Verdon 31500 Toulouse',
+        //     telephone: '05 81 91 78 56'
+        // }, {
+        //     type: "Point",
+        //     id: 2,
+        //     coordinates: '43.5677782425, 1.453293811',
+        //     nom_complet: 'PATINOIRE BELLEVUE',
+        //     adresse: '69ter route de Narbonne 31000 TOULOUSE',
+        //     telephone: '05 61 52 93 53'
+        // }];
 
-        L.geoJSON(patinoires).addTo(mymap);
+        // L.geoJSON(patinoires).addTo(mymap);
     });
     </script>
 </head>
