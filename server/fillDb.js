@@ -8,7 +8,7 @@ var db = new sqlite3.Database('firstTestDb.db');
 
 db.serialize(function() {
 
-    db.run("CREATE TABLE IF NOT EXISTS patinoires (id INTEGER PRIMARY KEY, geo_point TEXT, nom_complet TEXT, adresse TEXT, telephone TEXT)");
+    db.run("CREATE TABLE IF NOT EXISTS patinoires (id INTEGER PRIMARY KEY, type TEXT, long REAL, lat REAL, nom_complet TEXT, adresse TEXT, telephone TEXT)");
 
     const csvFile = fs.openSync('patinoires.csv', 'r');
 
@@ -18,20 +18,15 @@ db.serialize(function() {
 
     var dataArray = parse(csvContent, { delimiter: ";" });
 
-    console.log(dataArray.length);
+    // console.log(dataArray);
 
-    var stmt = db.prepare("INSERT INTO patinoires VALUES (?, ?, ?, ?, ?)");
+    var stmt = db.prepare("INSERT INTO patinoires VALUES (?, ?, ?, ?, ?, ?, ?)");
 
     for (var i = 1; i < dataArray.length; ++i) {
 
-        console.log("--------------------- " + i + " ---------------------");
-        console.log("Geo Point : " + dataArray[i][0]);
-        console.log("Geo Shape : " + dataArray[i][1]);
-        console.log("nom_complet : " + dataArray[i][2]);
-        console.log("adresse : " + dataArray[i][3]);
-        console.log("telephone : " + dataArray[i][4]);
+        var geoShape = JSON.parse(dataArray[i][1]);
+        stmt.run( i, geoShape.type, geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4] );
 
-        stmt.run(i, dataArray[i][0], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
     }
     stmt.finalize();
 
