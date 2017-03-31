@@ -11,9 +11,11 @@ app.get('/', function(req, res) {
     res.sendfile('index.html');
 });
 
+const DATABASE_NAME = 'geoData.db';
+
 app.get('/patinoires', function(req, res) {
 
-    var db = new sqlite3.Database('firstTestDb.db');
+    var db = new sqlite3.Database(DATABASE_NAME);
 
     db.serialize(function() {
 
@@ -26,6 +28,28 @@ app.get('/patinoires', function(req, res) {
                 delete rows[i].lat;
             }
             console.log(rows);
+            res.send(rows);
+        });
+
+    });
+
+    db.close();
+});
+
+app.get('/boulodromes', function(req, res) {
+
+    var db = new sqlite3.Database(DATABASE_NAME);
+
+    db.serialize(function() {
+
+        db.all("SELECT * FROM boulodromes", function(err, rows) {
+
+            for (var i = 0; i < rows.length; ++i) {
+                rows[i].coordinates = [rows[i].lng, rows[i].lat];
+
+                delete rows[i].lng;
+                delete rows[i].lat;
+            }
             res.send(rows);
         });
 

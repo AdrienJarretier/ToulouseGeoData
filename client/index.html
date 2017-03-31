@@ -41,6 +41,21 @@
             }
         });
 
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "boulodromes",
+            success: function(data, textStatus, jqXHR) {
+
+                var boulodromesLayer = L.geoJSON(data).addTo(mymap);
+
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("error : " + textStatus + errorThrown);
+            }
+        });
+
         // var patinoires = {
         //     "type": "FeatureCollection",
         //     "features": [{
