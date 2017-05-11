@@ -36,7 +36,6 @@ app.get('/patinoires', function(req, res) {
         delete rows[i].lng;
         delete rows[i].lat;
       }
-      console.log(rows);
       res.send(rows);
     });
 

@@ -41,10 +41,6 @@ db.serialize(function() {
   }
   stmt.finalize();
 
-  db.all("SELECT * FROM patinoires", function(err, rows) {
-    console.log(rows);
-  });
-
 
 
   /*
