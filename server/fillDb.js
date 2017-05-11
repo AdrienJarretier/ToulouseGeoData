@@ -15,7 +15,7 @@ const fs = require('fs');
 
 const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
-var db = new sqlite3.Database(config.db.database);
+let db = new sqlite3.Database(config.db.database);
 
 db.serialize(function() {
 
@@ -27,15 +27,15 @@ db.serialize(function() {
 
   fs.closeSync(csvFile);
 
-  var dataArray = parse(csvContent, { delimiter: ";" });
+  let dataArray = parse(csvContent, { delimiter: ";" });
 
   // console.log(dataArray);
 
-  var stmt = db.prepare("INSERT INTO patinoires VALUES (?, ?, ?, ?, ?, ?, ?)");
+  let stmt = db.prepare("INSERT INTO patinoires VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-  for (var i = 1; i < dataArray.length; ++i) {
+  for (let i = 1; i < dataArray.length; ++i) {
 
-    var geoShape = JSON.parse(dataArray[i][1]);
+    let geoShape = JSON.parse(dataArray[i][1]);
     stmt.run(i, geoShape.type, geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
 
   }
@@ -60,15 +60,15 @@ db.serialize(function() {
 
   fs.closeSync(boulodromesCsvFile);
 
-  var dataArray = parse(boulodromesCsvContent, { delimiter: ";" });
+  let dataArray = parse(boulodromesCsvContent, { delimiter: ";" });
 
   // console.log(dataArray);
 
-  var stmt = db.prepare("INSERT INTO boulodromes VALUES (?, ?, ?, ?, ?, ?, ?)");
+  let stmt = db.prepare("INSERT INTO boulodromes VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-  for (var i = 1; i < dataArray.length; ++i) {
+  for (let i = 1; i < dataArray.length; ++i) {
 
-    var geoShape = JSON.parse(dataArray[i][1]);
+    let geoShape = JSON.parse(dataArray[i][1]);
     stmt.run(i, geoShape.type, geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
 
   }

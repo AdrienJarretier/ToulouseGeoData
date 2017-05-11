@@ -11,7 +11,7 @@ const express = require('express');
 const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 
-var app = express();
+let app = express();
 
 const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
@@ -24,13 +24,13 @@ app.get('/', function(req, res) {
 
 app.get('/patinoires', function(req, res) {
 
-  var db = new sqlite3.Database(config.db.database);
+  let db = new sqlite3.Database(config.db.database);
 
   db.serialize(function() {
 
     db.all("SELECT * FROM patinoires", function(err, rows) {
 
-      for (var i = 0; i < rows.length; ++i) {
+      for (let i = 0; i < rows.length; ++i) {
         rows[i].coordinates = [rows[i].lng, rows[i].lat];
 
         delete rows[i].lng;
@@ -47,13 +47,13 @@ app.get('/patinoires', function(req, res) {
 
 app.get('/boulodromes', function(req, res) {
 
-  var db = new sqlite3.Database(config.db.database);
+  let db = new sqlite3.Database(config.db.database);
 
   db.serialize(function() {
 
     db.all("SELECT * FROM boulodromes", function(err, rows) {
 
-      for (var i = 0; i < rows.length; ++i) {
+      for (let i = 0; i < rows.length; ++i) {
         rows[i].coordinates = [rows[i].lng, rows[i].lat];
 
         delete rows[i].lng;
