@@ -9,10 +9,14 @@ npm install
 node fillDb.js
 ```
 
+configuration can be found in `config.json`
+
 Then everytime you want to launch the server
 ```bash
 node .
 ```
+
+you can now open you navigator to http://127.0.0.1:9226/ (if you didn't change the port in config.json)
 
 ## Libs
 

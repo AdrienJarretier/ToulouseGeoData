@@ -22,11 +22,9 @@ app.get('/', function(req, res) {
     res.sendfile('index.html');
 });
 
-const DATABASE_NAME = 'geoData.db';
-
 app.get('/patinoires', function(req, res) {
 
-    var db = new sqlite3.Database(DATABASE_NAME);
+    var db = new sqlite3.Database(config.db.database);
 
     db.serialize(function() {
 
@@ -49,7 +47,7 @@ app.get('/patinoires', function(req, res) {
 
 app.get('/boulodromes', function(req, res) {
 
-    var db = new sqlite3.Database(DATABASE_NAME);
+    var db = new sqlite3.Database(config.db.database);
 
     db.serialize(function() {
 
