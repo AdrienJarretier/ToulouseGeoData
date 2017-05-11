@@ -19,54 +19,54 @@ app.use(express.static(__dirname + '/../client'));
 
 
 app.get('/', function(req, res) {
-    res.sendfile('index.html');
+  res.sendfile('index.html');
 });
 
 app.get('/patinoires', function(req, res) {
 
-    var db = new sqlite3.Database(config.db.database);
+  var db = new sqlite3.Database(config.db.database);
 
-    db.serialize(function() {
+  db.serialize(function() {
 
-        db.all("SELECT * FROM patinoires", function(err, rows) {
+    db.all("SELECT * FROM patinoires", function(err, rows) {
 
-            for (var i = 0; i < rows.length; ++i) {
-                rows[i].coordinates = [rows[i].lng, rows[i].lat];
+      for (var i = 0; i < rows.length; ++i) {
+        rows[i].coordinates = [rows[i].lng, rows[i].lat];
 
-                delete rows[i].lng;
-                delete rows[i].lat;
-            }
-            console.log(rows);
-            res.send(rows);
-        });
-
+        delete rows[i].lng;
+        delete rows[i].lat;
+      }
+      console.log(rows);
+      res.send(rows);
     });
 
-    db.close();
+  });
+
+  db.close();
 });
 
 app.get('/boulodromes', function(req, res) {
 
-    var db = new sqlite3.Database(config.db.database);
+  var db = new sqlite3.Database(config.db.database);
 
-    db.serialize(function() {
+  db.serialize(function() {
 
-        db.all("SELECT * FROM boulodromes", function(err, rows) {
+    db.all("SELECT * FROM boulodromes", function(err, rows) {
 
-            for (var i = 0; i < rows.length; ++i) {
-                rows[i].coordinates = [rows[i].lng, rows[i].lat];
+      for (var i = 0; i < rows.length; ++i) {
+        rows[i].coordinates = [rows[i].lng, rows[i].lat];
 
-                delete rows[i].lng;
-                delete rows[i].lat;
-            }
-            res.send(rows);
-        });
-
+        delete rows[i].lng;
+        delete rows[i].lat;
+      }
+      res.send(rows);
     });
 
-    db.close();
+  });
+
+  db.close();
 });
 
 app.listen(config.port, function() {
-    console.log('listening on *:' + config.port);
+  console.log('listening on *:' + config.port);
 });
