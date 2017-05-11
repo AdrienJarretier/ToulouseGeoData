@@ -7,11 +7,10 @@ strict mode code can sometimes be made to run faster than identical code that's 
 Third, strict mode prohibits some syntax likely to be defined in future versions of ECMAScript.
 */
 
+const parse = require('csv-parse/lib/sync');
+const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 
-const parse = require('csv-parse/lib/sync');
-
-const fs = require('fs');
 
 const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
