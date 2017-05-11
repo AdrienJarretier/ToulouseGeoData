@@ -2,7 +2,7 @@
   "name": "web-map-geo-data",
   "version": "0.1.0",
   "description": "display geo referenced open data on a map using Leaflet and SQlite",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

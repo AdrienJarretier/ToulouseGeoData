@@ -1,0 +1,6 @@
+{
+  "port": 9226,
+  "db": {
+    "database": "geoData.db"
+  }
+}

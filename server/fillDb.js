@@ -1,10 +1,21 @@
+'use strict';
+/*
+Strict mode makes several changes to normal JavaScript semantics.
+First, strict mode eliminates some JavaScript silent errors by changing them to throw errors.
+Second, strict mode fixes mistakes that make it difficult for JavaScript engines to perform optimizations:
+strict mode code can sometimes be made to run faster than identical code that's not strict mode.
+Third, strict mode prohibits some syntax likely to be defined in future versions of ECMAScript.
+*/
+
 const sqlite3 = require('sqlite3').verbose();
 
 const parse = require('csv-parse/lib/sync');
 
 const fs = require('fs');
 
-var db = new sqlite3.Database('geoData.db');
+const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+
+var db = new sqlite3.Database(config.db.database);
 
 db.serialize(function() {
 

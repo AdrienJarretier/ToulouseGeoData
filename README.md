@@ -2,11 +2,17 @@
 
 ## Server
 
+Do this only once
 ```bash
 cd server
 npm install
+node fillDb.js
 ```
 
+Then everytime you want to launch the server
+```bash
+node .
+```
 
 ## Libs
 
