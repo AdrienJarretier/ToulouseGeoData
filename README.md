@@ -11,10 +11,12 @@ npm install
 ## Libs
 
 - Jquery
-- Leaflet
+- Leaflet : map
+  - awesome-markers : custom markers with **ionicons**
 - Nodejs
-  - csv-parse
-  - sqlite3
+  - csv-parse : csv parser
+  - express : web framework
+  - sqlite3 : sqLite database
 
 ## Authors
 
