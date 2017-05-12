@@ -6,6 +6,7 @@
   <title>Sample page</title>
   <link rel="stylesheet" href="leaflet/leaflet.css" />
   <script src="leaflet/leaflet.js"></script>
+  <script src="leaflet-choropleth-1.1.3/dist/choropleth.js"></script>
   <script type="text/javascript" src="jquery-latest.min.js"></script>
   <style>
   #mapid {
@@ -14,6 +15,16 @@
   </style>
   <script type="text/javascript">
   'use strict';
+
+  function addLine(string, line) {
+    return string + '<br>' + line;
+  }
+
+  function percent(count, total) {
+
+    return Math.round(count * 1000 / total) / 10 + ' %';
+
+  }
 
   $(document).ready(function() {
     let mymap = L.map('mapid').setView([43.6, 1.44], 13);
@@ -31,7 +42,29 @@
       url: "election",
       success: function(data, textStatus, jqXHR) {
 
-        L.geoJSON(data).addTo(mymap);
+        L.choropleth(data, {
+          valueProperty: 'nb_bulletins', // which property in the features to use
+          colors: ['white', 'blue', 'grey'], // chroma.js scale - include as many as you like
+          steps: 3, // number of breaks or steps in range
+          mode: 'q', // q for quantile, e for equidistant, k for k-means
+          style: {
+            color: '#fff', // border color
+            weight: 2,
+            fillOpacity: 0.8
+          },
+          onEachFeature: function(feature, layer) {
+            let abstentionsPlusBlancs = feature.properties.nb_abstentions + feature.properties.nb_blancs;
+            let nb_voix_1 = feature.properties.nb_voix_1;
+            let nb_voix_2 = feature.properties.nb_voix_2;
+            let totalVoices = abstentionsPlusBlancs + nb_voix_1 + nb_voix_2;
+
+            let popup = 'totalVoices : ' + totalVoices;
+            popup = addLine(popup, 'abstentions + Blancs : ' + abstentionsPlusBlancs + ' - ' + percent(abstentionsPlusBlancs, totalVoices));
+            popup = addLine(popup, 'Macron : ' + nb_voix_1 + ' - ' + percent(nb_voix_1, totalVoices));
+            popup = addLine(popup, 'Lepen : ' + nb_voix_2 + ' - ' + percent(nb_voix_2, totalVoices));
+            layer.bindPopup(popup);
+          }
+        }).addTo(mymap)
 
       },
       error: function(jqXHR, textStatus, errorThrown) {
