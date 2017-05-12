@@ -9,6 +9,7 @@ Third, strict mode prohibits some syntax likely to be defined in future versions
 
 const common = require('./common.js');
 const express = require('express');
+const geojsonArea = require('geojson-area');
 const sqlite3 = require('sqlite3').verbose();
 
 let app = express();
@@ -70,7 +71,18 @@ app.get('/election', function(req, res) {
 
   common.readFile('jsonData/election-presidentielle-2017-second-tour-resultats-ville-de-toulouse.geojson')
     .then((fileContent) => {
-      res.send(fileContent);
+
+      let geoJson = JSON.parse(fileContent);
+
+      for (let feat of geoJson.features) {
+
+        let squareMeters = geojsonArea.geometry(feat.geometry);
+
+        feat.properties.squareMeters = squareMeters;
+
+      }
+
+      res.send(geoJson);
     });
 
 });

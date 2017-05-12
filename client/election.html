@@ -104,6 +104,7 @@
             mouseout: resetHighlight,
             click: zoomToFeature
           });
+
         }
 
         geojson = L.geoJson(data, {
@@ -133,8 +134,10 @@
             let blancsEtAbstention = props.nb_abstentions + props.nb_blancs;
 
             div.append('<b>Blancs et abstention : </b>' + blancsEtAbstention + ' - ' + percent(blancsEtAbstention, total)).append($('<br>'));
-            div.append('<b>Macron : </b>' + '</b>' + props.nb_voix_1 + ' - ' + percent(props.nb_voix_1, total)).append($('<br>'));
-            div.append('<b>Lepen : </b>' + '</b>' + props.nb_voix_2 + ' - ' + percent(props.nb_voix_2, total)).append($('<br>'));
+            div.append('<b>Macron : </b>' + props.nb_voix_1 + ' - ' + percent(props.nb_voix_1, total)).append($('<br>'));
+            div.append('<b>Lepen : </b>' + props.nb_voix_2 + ' - ' + percent(props.nb_voix_2, total)).append($('<br>'));
+            div.append($('<br>')).append('<b>Area : </b>' + Math.round(props.squareMeters / 10000) + ' ha').append($('<br>'));
+            div.append(Math.round(props.nb_inscrits * 1000000 / props.squareMeters) + ' inscrits / km').append($('<sup>').text('2')).append($('<br>'));
 
           } else
             div.append('passer la souris sur une zone');
