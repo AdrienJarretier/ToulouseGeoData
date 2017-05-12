@@ -13,6 +13,31 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<script type="text/javascript"> </script>
 
+		<!-- Pour leaflet -->
+		<link rel="stylesheet" href="leaflet/leaflet.css" />
+  		<script src="leaflet/leaflet.js"></script>
+
+   		<style> 
+   			#mapid {
+    			height: 720px;
+  					}
+  		</style>
+
+   		<script type="text/javascript">
+  'use strict';
+
+  			$(document).ready(function() {
+  				let map = L.map('mapid').setView([43.6, 1.44], 12);
+
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox.streets',
+      accessToken: 'pk.eyJ1IjoibXJmcmVlemUiLCJhIjoiY2owNWg2a2kyMDA2cjMycGZndzA2ZzZneCJ9.-wsVwihnGBO41Z9FvV_UAQ'
+    }).addTo(map);
+  			});	
+  		</script>
+
 	</head>
 
 
@@ -45,8 +70,14 @@
   				<label for="couvert">Où se trouve le terrain ?</label>
   				<input class="form-control" id="disabledInput" type="text" placeholder="latitude" disabled>
   				<input class="form-control" id="disabledInput" type="text" placeholder="longitude" disabled>
+
+  				
+  				
+
+
   			</div>	
 
 		</form>
+		<div id="mapid"></div>
 	</body>
 </html>	
