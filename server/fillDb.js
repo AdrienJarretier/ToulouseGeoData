@@ -63,7 +63,7 @@ function fillPatinoires() {
 
       });
 
-      return;
+      return; // return Promise.resolve
 
     });
 
@@ -90,7 +90,7 @@ function fillBoulodromes() {
 
       });
 
-      return;
+      return; // return Promise.resolve
 
     });
 
