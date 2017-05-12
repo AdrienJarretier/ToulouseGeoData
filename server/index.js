@@ -7,13 +7,13 @@ strict mode code can sometimes be made to run faster than identical code that's 
 Third, strict mode prohibits some syntax likely to be defined in future versions of ECMAScript.
 */
 
+const common = require('./common.js');
 const express = require('express');
-const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 
 let app = express();
 
-const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+const config = common.serverConfig;
 
 app.use(express.static(__dirname + '/../client'));
 

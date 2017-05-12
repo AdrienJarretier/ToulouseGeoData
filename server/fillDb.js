@@ -7,30 +7,28 @@ strict mode code can sometimes be made to run faster than identical code that's 
 Third, strict mode prohibits some syntax likely to be defined in future versions of ECMAScript.
 */
 
+const common = require('./common.js');
 const parse = require('csv-parse');
-const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 
 function parseCsvFile(csvFile) {
 
   return new Promise((resolve, reject) => {
+    common.readFile(csvFile)
+      .then((fileContent) => {
 
-    fs.open(csvFile, 'r', (err, fd) => {
-      fs.readFile(fd, (err, data) => {
-
-        fs.close(fd);
-
-        parse(data, { delimiter: ";" }, function(err, output) {
+        parse(fileContent, { delimiter: ";" }, function(err, output) {
 
           resolve(output);
         });
 
+
       });
-    });
   });
+
 }
 
-const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+const config = common.serverConfig;
 
 let db = new sqlite3.Database(config.db.database);
 
