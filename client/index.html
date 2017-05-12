@@ -4,67 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Sample page</title>
-  <link href='json-formatter/JSONFormatter.css' media='all' rel='stylesheet' type='text/css'>
-  <script src="json-formatter/JSONFormatter.js"></script>
-  <link rel="stylesheet" href="leaflet/leaflet.css" />
-  <script src="leaflet/leaflet.js"></script>
-  <script type="text/javascript" src="jquery-latest.min.js"></script>
-  <style>
-  #mapid {
-    height: 720px;
-  }
-  </style>
-  <script type="text/javascript">
-  'use strict';
-
-  $(document).ready(function() {
-    let mymap = L.map('mapid').setView([43.6, 1.44], 13);
-
-
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-      maxZoom: 18,
-      id: 'mapbox.streets',
-      accessToken: 'pk.eyJ1IjoibXJmcmVlemUiLCJhIjoiY2owNWg2a2kyMDA2cjMycGZndzA2ZzZneCJ9.-wsVwihnGBO41Z9FvV_UAQ'
-    }).addTo(mymap);
-
-    $.ajax({
-      type: "GET",
-      dataType: "json",
-      url: "patinoires",
-      success: function(data, textStatus, jqXHR) {
-
-        console.log(data);
-        L.geoJSON(data).addTo(mymap);
-
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.log("error : " + textStatus + errorThrown);
-      }
-    });
-
-    $.ajax({
-      type: "GET",
-      dataType: "json",
-      url: "boulodromes",
-      success: function(data, textStatus, jqXHR) {
-
-        let boulodromesLayer = L.geoJSON(data).addTo(mymap);
-
-
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.log("error : " + textStatus + errorThrown);
-      }
-    });
-
-  });
-  </script>
 </head>
 
 <body>
   <h1>Sample page</h1>
-  <div id="mapid"></div>
+  <a href="boulodromes.html">boulodromes</a>
+  <br>
+  <a href="election.html">election</a>
 </body>
 
 </html>

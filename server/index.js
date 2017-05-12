@@ -66,6 +66,15 @@ app.get('/boulodromes', function(req, res) {
   db.close();
 });
 
+app.get('/election', function(req, res) {
+
+  common.readFile('jsonData/election-presidentielle-2017-second-tour-resultats-ville-de-toulouse.geojson')
+    .then((fileContent) => {
+      res.send(fileContent);
+    });
+
+});
+
 app.listen(config.port, function() {
   console.log('listening on *:' + config.port);
 });
