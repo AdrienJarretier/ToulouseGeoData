@@ -123,16 +123,21 @@
         // method that we will use to update the control based on feature properties passed
         info.update = function(props) {
 
-          this._div.innerHTML = '<h4>résultats du vote</h4>';
+          let div = $(this._div);
+
+          div.html('<h4>résultats du vote</h4>');
 
           if (props) {
 
             let total = props.nb_inscrits - props.nb_nuls;
+            let blancsEtAbstention = props.nb_abstentions + props.nb_blancs;
 
-            this._div.innerHTML += '<b>' + props.candidat_1 + '</b><br />' + props.nb_voix_1 + ' - ' + percent(props.nb_voix_1, total);
+            div.append('<b>Blancs et abstention : </b>' + blancsEtAbstention + ' - ' + percent(blancsEtAbstention, total)).append($('<br>'));
+            div.append('<b>Macron : </b>' + '</b>' + props.nb_voix_1 + ' - ' + percent(props.nb_voix_1, total)).append($('<br>'));
+            div.append('<b>Lepen : </b>' + '</b>' + props.nb_voix_2 + ' - ' + percent(props.nb_voix_2, total)).append($('<br>'));
 
           } else
-            this._div.innerHTML += 'passer la souris sur une zone';
+            div.append('passer la souris sur une zone');
 
         };
 
