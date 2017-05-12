@@ -37,40 +37,53 @@ const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
 let db = new sqlite3.Database(config.db.database);
 
-db.serialize(function() {
+db.on('trace', (sql) => { console.log(sql); });
 
-  db.run("CREATE TABLE IF NOT EXISTS patinoires (id INTEGER PRIMARY KEY, type TEXT, lng REAL, lat REAL, nom_complet TEXT, adresse TEXT, telephone TEXT)");
+parseCsvFile('csvData/patinoires.csv')
+  .then((dataArray) => {
 
-  parseCsvFile('csvData/patinoires.csv')
-    .then((dataArray) => {
+    db.serialize(function() {
+
+      db.run("CREATE TABLE IF NOT EXISTS patinoires (id INTEGER PRIMARY KEY, type TEXT, lng REAL, lat REAL, nom_complet TEXT, adresse TEXT, telephone TEXT)");
 
       let stmt = db.prepare("INSERT INTO patinoires VALUES (?, ?, ?, ?, ?, ?, ?)");
+
 
       for (let i = 1; i < dataArray.length; ++i) {
 
         let geoShape = JSON.parse(dataArray[i][1]);
         stmt.run(i, geoShape.type, geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
 
+
       }
       stmt.finalize();
-
-      if (++inserted == DATA_FILES_COUNT)
-        db.close();
 
 
     });
 
 
+    if (++inserted == DATA_FILES_COUNT) {
+      db.close();
+      console.log('closing db');
+    }
 
-  /*
-  Geo Point;Geo Shape;index;couvert;type_petanque
-  43.6236590022, 1.46079600071;"{""type"": ""Point"", ""coordinates"": [1.46079600070844, 43.62365900222877]}";Périole;N;
-  */
+  });
 
-  db.run("CREATE TABLE IF NOT EXISTS boulodromes (id INTEGER PRIMARY KEY, type TEXT, lng REAL, lat REAL, nom TEXT, couvert TEXT, type_petanque TEXT)");
 
-  parseCsvFile('csvData/boulodromes.csv')
-    .then((dataArray) => {
+/*
+Geo Point;Geo Shape;index;couvert;type_petanque
+43.6236590022, 1.46079600071;"{""type"": ""Point"", ""coordinates"": [1.46079600070844, 43.62365900222877]}";Périole;N;
+*/
+
+
+parseCsvFile('csvData/boulodromes.csv')
+  .then((dataArray) => {
+
+    console.log('inserting boulodromes');
+
+    db.serialize(function() {
+
+      db.run("CREATE TABLE IF NOT EXISTS boulodromes (id INTEGER PRIMARY KEY, type TEXT, lng REAL, lat REAL, nom TEXT, couvert TEXT, type_petanque TEXT)");
 
       let stmt = db.prepare("INSERT INTO boulodromes VALUES (?, ?, ?, ?, ?, ?, ?)");
 
@@ -82,10 +95,14 @@ db.serialize(function() {
       }
       stmt.finalize();
 
-      if (++inserted == DATA_FILES_COUNT)
-        db.close();
-
-
     });
 
-});
+
+    console.log('done');
+
+    if (++inserted == DATA_FILES_COUNT) {
+      db.close();
+      console.log('closing db');
+    }
+
+  });
