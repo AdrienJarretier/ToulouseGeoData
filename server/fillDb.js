@@ -7,10 +7,31 @@ strict mode code can sometimes be made to run faster than identical code that's 
 Third, strict mode prohibits some syntax likely to be defined in future versions of ECMAScript.
 */
 
-const parse = require('csv-parse/lib/sync');
+const parse = require('csv-parse');
 const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 
+function parseCsvFile(csvFile) {
+
+  return new Promise((resolve, reject) => {
+
+    fs.open(csvFile, 'r', (err, fd) => {
+      fs.readFile(fd, (err, data) => {
+
+        fs.close(fd);
+
+        parse(data, { delimiter: ";" }, function(err, output) {
+
+          resolve(output);
+        });
+
+      });
+    });
+  });
+}
+
+const DATA_FILES_COUNT = 2;
+let inserted = 0;
 
 const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
@@ -20,25 +41,24 @@ db.serialize(function() {
 
   db.run("CREATE TABLE IF NOT EXISTS patinoires (id INTEGER PRIMARY KEY, type TEXT, lng REAL, lat REAL, nom_complet TEXT, adresse TEXT, telephone TEXT)");
 
-  const csvFile = fs.openSync('csvData/patinoires.csv', 'r');
+  parseCsvFile('csvData/patinoires.csv')
+    .then((dataArray) => {
 
-  const csvContent = fs.readFileSync(csvFile);
+      let stmt = db.prepare("INSERT INTO patinoires VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-  fs.closeSync(csvFile);
+      for (let i = 1; i < dataArray.length; ++i) {
 
-  let dataArray = parse(csvContent, { delimiter: ";" });
+        let geoShape = JSON.parse(dataArray[i][1]);
+        stmt.run(i, geoShape.type, geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
 
-  // console.log(dataArray);
+      }
+      stmt.finalize();
 
-  let stmt = db.prepare("INSERT INTO patinoires VALUES (?, ?, ?, ?, ?, ?, ?)");
+      if (++inserted == DATA_FILES_COUNT)
+        db.close();
 
-  for (let i = 1; i < dataArray.length; ++i) {
 
-    let geoShape = JSON.parse(dataArray[i][1]);
-    stmt.run(i, geoShape.type, geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
-
-  }
-  stmt.finalize();
+    });
 
 
 
@@ -49,29 +69,23 @@ db.serialize(function() {
 
   db.run("CREATE TABLE IF NOT EXISTS boulodromes (id INTEGER PRIMARY KEY, type TEXT, lng REAL, lat REAL, nom TEXT, couvert TEXT, type_petanque TEXT)");
 
-  const boulodromesCsvFile = fs.openSync('csvData/boulodromes.csv', 'r');
+  parseCsvFile('csvData/boulodromes.csv')
+    .then((dataArray) => {
 
-  const boulodromesCsvContent = fs.readFileSync(boulodromesCsvFile);
+      let stmt = db.prepare("INSERT INTO boulodromes VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-  fs.closeSync(boulodromesCsvFile);
+      for (let i = 1; i < dataArray.length; ++i) {
 
-  let dataArray = parse(boulodromesCsvContent, { delimiter: ";" });
+        let geoShape = JSON.parse(dataArray[i][1]);
+        stmt.run(i, geoShape.type, geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
 
-  // console.log(dataArray);
+      }
+      stmt.finalize();
 
-  let stmt = db.prepare("INSERT INTO boulodromes VALUES (?, ?, ?, ?, ?, ?, ?)");
-
-  for (let i = 1; i < dataArray.length; ++i) {
-
-    let geoShape = JSON.parse(dataArray[i][1]);
-    stmt.run(i, geoShape.type, geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
-
-  }
-  stmt.finalize();
+      if (++inserted == DATA_FILES_COUNT)
+        db.close();
 
 
-
+    });
 
 });
-
-db.close();

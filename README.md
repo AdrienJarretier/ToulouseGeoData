@@ -2,6 +2,10 @@
 
 ## Server
 
+requirement versions :
+- nodejs : v 6.10.0 (lts)
+- npm : v 4.4.1
+
 Do this only once
 ```bash
 cd server
