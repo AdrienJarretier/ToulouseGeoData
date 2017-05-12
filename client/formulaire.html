@@ -21,26 +21,31 @@
 			<!-- Pour le champs index -->
 			<div class="form-group">
     			<label for="index"> Nom du boulodrome </label>
-    			<input type="text" class="form-control" id="index" placeholder="Text input">
+    			<input type="text" class="form-control" id="index" placeholder="Nom">
   			</div>
 
   			<!-- Pour le champs type de petanque -->
 			<div class="form-group">
     			<label for="type">Quel type de pétanque y est pratiqué ?</label>
-    			<input type="text" class="form-control" id="type" placeholder="texte">
+    			<input type="text" class="form-control" id="type" placeholder="type">
   			</div>
 
   			<!-- Pour le champs terrain couvert -->
   			<div class="form-group">
   				<label for="couvert">Le terrain est-il couvert ?</label>
   				<select class="form-control" id="couvert">
+  					<option>non renseigné</option>
   					<option>oui</option>
   					<option>non</option>
-  					<option>oui/non</option>
 				</select>
 			</div>
 
   			<!-- Pour les coordonnees du boulodrome -->
+  			<div class="form-group">
+  				<label for="couvert">Où se trouve le terrain ?</label>
+  				<input class="form-control" id="disabledInput" type="text" placeholder="latitude" disabled>
+  				<input class="form-control" id="disabledInput" type="text" placeholder="longitude" disabled>
+  			</div>	
 
 		</form>
 	</body>
