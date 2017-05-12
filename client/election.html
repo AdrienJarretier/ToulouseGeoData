@@ -73,7 +73,7 @@
 
 
         function highlightFeature(e) {
-          var layer = e.target;
+          let layer = e.target;
 
           layer.setStyle({
             weight: 5,
@@ -112,7 +112,7 @@
         }).addTo(map);
 
 
-        var info = L.control();
+        let info = L.control();
 
         info.onAdd = function(map) {
           this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
@@ -137,6 +137,24 @@
         };
 
         info.addTo(map);
+
+        let legend = L.control({
+          position: 'bottomright'
+        });
+
+        legend.onAdd = function(map) {
+
+          let div = L.DomUtil.create('div', 'info legend');
+
+          $(div).append($('<h3>').text('Candidat en tête'));
+          $(div).append($('<i>').css('background', 'orange')).append('Blancs et abstention').append($('<br>'));
+          $(div).append($('<i>').css('background', '#666666')).append('Macron').append($('<br>'));
+          $(div).append($('<i>').css('background', 'blue')).append('Lepen').append($('<br>'));
+
+          return div;
+        };
+
+        legend.addTo(map);
 
 
       },
