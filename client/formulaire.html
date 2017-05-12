@@ -17,36 +17,31 @@
 
 
 	<body>
-		<div class="container">
-			<h1>Bienvenue</h1>
+		<form>
+			<!-- Pour le champs index -->
+			<div class="form-group">
+    			<label for="index"> Nom du boulodrome </label>
+    			<input type="text" class="form-control" id="index" placeholder="Text input">
+  			</div>
 
-			<ul class="nav nav-tabs">
-				<li class="active"><a data-toggle="tab" href="#boulodromes">Les Boulodromes de Toulouse</a></li>
-				<li><a data-toggle="tab" href="#ajout">Ajouter un boulodrome</a></li>
-				<li><a data-toggle="tab" href="#election">Voir le résultat des éléctions</a></li>
-			</ul>
+  			<!-- Pour le champs type de petanque -->
+			<div class="form-group">
+    			<label for="type">Quel type de pétanque y est pratiqué ?</label>
+    			<input type="text" class="form-control" id="type" placeholder="texte">
+  			</div>
 
-			<div class="tab-content">
-				<div id="boulodromes" class="tab-pane fade in active">
-					<p>
+  			<!-- Pour le champs terrain couvert -->
+  			<div class="form-group">
+  				<label for="couvert">Le terrain est-il couvert ?</label>
+  				<select class="form-control" id="couvert">
+  					<option>oui</option>
+  					<option>non</option>
+  					<option>oui/non</option>
+				</select>
+			</div>
 
-					</p>
-				</div>
+  			<!-- Pour les coordonnees du boulodrome -->
 
-				<div id="ajout" class="tab-pane fade">
-					<p>
-						<object width="400" height="400" data="formulaire.html"></object>
-					</p>
-				</div>
-
-				<div id="election" class="tab-pane fade">
-					<p>
-
-					</p>
-				</div>
-
-
-		</div>
+		</form>
 	</body>
-</html>		
-	
+</html>	
