@@ -1,52 +1,44 @@
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<!-- Optional theme -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-		<script type="text/javascript"> </script>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+  </script>
+</head>
 
-	</head>
+<body>
+  <div class="container">
+    <h1>Bienvenue</h1>
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#boulodromes">Les Boulodromes de Toulouse</a></li>
+      <li><a data-toggle="tab" href="#ajout">Ajouter un boulodrome</a></li>
+      <li><a data-toggle="tab" href="#election">Voir le résultat des éléctions</a></li>
+    </ul>
+    <div class="tab-content">
+      <div id="boulodromes" class="tab-pane fade in active">
+        <p>
+          <object width="850" height="800" data="boulodromes.html"></object>
+        </p>
+      </div>
+      <div id="ajout" class="tab-pane fade">
+        <p>
+          <object width="850" height="850" data="formulaire.html"></object>
+        </p>
+      </div>
+      <div id="election" class="tab-pane fade">
+        <p>
+          <object width="850" height="850" data="election.html"></object>
+        </p>
+      </div>
+    </div>
+</body>
 
-
-	<body>
-		<div class="container">
-			<h1>Bienvenue</h1>
-
-			<ul class="nav nav-tabs">
-				<li class="active"><a data-toggle="tab" href="#boulodromes">Les Boulodromes de Toulouse</a></li>
-				<li><a data-toggle="tab" href="#ajout">Ajouter un boulodrome</a></li>
-				<li><a data-toggle="tab" href="#election">Voir le résultat des éléctions</a></li>
-			</ul>
-
-			<div class="tab-content">
-				<div id="boulodromes" class="tab-pane fade in active">
-					<p>
-						<object width="850" height="800" data="boulodromes.html"></object>
-					</p>
-				</div>
-
-				<div id="ajout" class="tab-pane fade">
-					<p>
-						<object width="850" height="850" data="formulaire.html"></object>
-					</p>
-				</div>
-
-				<div id="election" class="tab-pane fade">
-					<p>
-						<object width="850" height="850" data="election.html"></object>
-					</p>
-				</div>
-
-
-		</div>
-	</body>
-</html>		
-	
+</html>

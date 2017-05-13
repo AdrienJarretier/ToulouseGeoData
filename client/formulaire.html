@@ -1,34 +1,30 @@
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<!-- Optional theme -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-		<script type="text/javascript"> </script>
-
-		<!-- Pour leaflet -->
-		<link rel="stylesheet" href="leaflet/leaflet.css" />
-  		<script src="leaflet/leaflet.js"></script>
-
-   		<style> 
-   			#mapid {
-    			height: 720px;
-  					}
-
-  		</style>
-
-   		<script type="text/javascript">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+  </script>
+  <!-- Pour leaflet -->
+  <link rel="stylesheet" href="leaflet/leaflet.css" />
+  <script src="leaflet/leaflet.js"></script>
+  <style>
+  #mapid {
+    height: 720px;
+  }
+  </style>
+  <script type="text/javascript">
   'use strict';
 
-  			$(document).ready(function() {
-  				let map = L.map('mapid').setView([43.6, 1.44], 12);
+  $(document).ready(function() {
+    let map = L.map('mapid').setView([43.6, 1.44], 12);
 
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -36,77 +32,69 @@
       id: 'mapbox.streets',
       accessToken: 'pk.eyJ1IjoibXJmcmVlemUiLCJhIjoiY2owNWg2a2kyMDA2cjMycGZndzA2ZzZneCJ9.-wsVwihnGBO41Z9FvV_UAQ'
     }).addTo(map);
-  			
-        let longitude = $('#longitude');
-        let latitude = $('#latitude');
-        let popup = L.popup();
 
-        function onMapClick(e) {
-          popup
-            .setLatLng(e.latlng)
-            .setContent("Vous avez selectionné les coordonnées " + e.latlng.toString())
-            .openOn(map);
-            longitude.val(e.latlng.lng);
-            latitude.val(e.latlng.lat);
-        }
+    let longitude = $('#longitude');
+    let latitude = $('#latitude');
+    let popup = L.popup();
 
-         map.on('click', onMapClick);
+    function onMapClick(e) {
+      popup
+        .setLatLng(e.latlng)
+        .setContent("Vous avez selectionné les coordonnées " + e.latlng.toString())
+        .openOn(map);
+      longitude.val(e.latlng.lng);
+      latitude.val(e.latlng.lat);
+    }
 
-         });  
-  		</script>
+    map.on('click', onMapClick);
 
-	</head>
+  });
+  </script>
+</head>
 
-
-	<body>
-    <div class="container">
-    
-
-		<form>
-			<!-- Pour le champs index -->
-
-			<div class="form-group row">
-      <div class="col-xs-12">
-    			<label for="index"> Nom du boulodrome </label>
-    			<input type="text" class="form-control" id="index" placeholder="Obligatoire" required>
-  			</div>
-      </div>
-
-  			<!-- Pour le champs type de petanque -->
-			<div class="form-group row">
-      <div class="col-xs-12">
-    			<label for="type">Quel type de pétanque y est pratiqué ?</label>
-    			<input type="text" class="form-control" id="type" placeholder="Optionnel">
-  			</div>
-      </div>
-
-  			<!-- Pour le champs terrain couvert -->
-  			<div class="form-group row">
+<body>
+  <div class="container">
+    <form>
+      <!-- Pour le champs index -->
+      <div class="form-group row">
         <div class="col-xs-12">
-  				<label for="couvert">Le terrain est-il couvert ?</label>
-  				<select class="form-control" id="couvert">
-  					<option>non renseigné</option>
-  					<option>oui</option>
-  					<option>non</option>
-				</select>
-			</div>
-    </div>
-
-  			<!-- Pour les coordonnees du boulodrome -->
-  			<div class="form-group row">
-      <div class="col-xs-4">
-  				<label for="couvert">Où se trouve le terrain ?</label>
-  				<input class="form-control" id="latitude" type="text" placeholder="latitude" disabled>
-  				<input class="form-control" id="longitude" type="text" placeholder="longitude" disabled>
+          <label for="index"> Nom du boulodrome </label>
+          <input type="text" class="form-control" id="index" placeholder="Obligatoire" required>
         </div>
-  			</div>	
-
-		</form>
+      </div>
+      <!-- Pour le champs type de petanque -->
+      <div class="form-group row">
+        <div class="col-xs-12">
+          <label for="type">Quel type de pétanque y est pratiqué ?</label>
+          <input type="text" class="form-control" id="type" placeholder="Optionnel">
+        </div>
+      </div>
+      <!-- Pour le champs terrain couvert -->
+      <div class="form-group row">
+        <div class="col-xs-12">
+          <label for="couvert">Le terrain est-il couvert ?</label>
+          <select class="form-control" id="couvert">
+            <option>non renseigné</option>
+            <option>oui</option>
+            <option>non</option>
+          </select>
+        </div>
+      </div>
+      <!-- Pour les coordonnees du boulodrome -->
+      <div class="form-group row">
+        <div class="col-xs-4">
+          <label for="couvert">Où se trouve le terrain ?</label>
+          <input class="form-control" id="latitude" type="text" placeholder="latitude" disabled>
+          <input class="form-control" id="longitude" type="text" placeholder="longitude" disabled>
+        </div>
+      </div>
+    </form>
     <div class="form-group row">
       <div class="col-xs-12">
-		    <div id="mapid"></div>
+        <div id="mapid"></div>
       </div>
     </div>
   </div>
-	</body>
-</html>	
+</body>
+
+</html>
