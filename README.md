@@ -30,6 +30,7 @@ you can now open you navigator to http://127.0.0.1:9226/ (if you didn't change t
 - Nodejs
   - csv-parse : csv parser
   - express : web framework
+  - geojson-area : calculate the area in m² of a geoJson polygon 
   - sqlite3 : sqLite database
 
 ## Data
