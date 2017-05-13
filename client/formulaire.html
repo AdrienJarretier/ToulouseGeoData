@@ -24,6 +24,7 @@
   'use strict';
 
   $(document).ready(function() {
+    // initialisation de la map
     let map = L.map('mapid').setView([43.6, 1.44], 12);
 
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -33,14 +34,16 @@
       accessToken: 'pk.eyJ1IjoibXJmcmVlemUiLCJhIjoiY2owNWg2a2kyMDA2cjMycGZndzA2ZzZneCJ9.-wsVwihnGBO41Z9FvV_UAQ'
     }).addTo(map);
 
+
     let longitude = $('#longitude');
     let latitude = $('#latitude');
     let popup = L.popup();
 
+    // fonction pour récupérer les coordonnées au clic de la souris sur la carte
     function onMapClick(e) {
       popup
         .setLatLng(e.latlng)
-        .setContent("Vous avez selectionné les coordonnées " + e.latlng.toString())
+        .setContent("Vous avez selectionné les coordonnées : (" + e.latlng.lat.toString()+ ", " + e.latlng.lng.toString() + ")")
         .openOn(map);
       longitude.val(e.latlng.lng);
       latitude.val(e.latlng.lat);
@@ -54,6 +57,7 @@
 
 <body>
   <div class="container">
+
     <form>
       <!-- Pour le champs index -->
       <div class="form-group row">
@@ -80,20 +84,47 @@
           </select>
         </div>
       </div>
+
       <!-- Pour les coordonnees du boulodrome -->
       <div class="form-group row">
-        <div class="col-xs-4">
-          <label for="couvert">Où se trouve le terrain ?</label>
+        <div class="col-xs-12">
+          <label>Où se trouve le terrain ?</label>
+          <p>Indiquer l'endroit où se trouve le boulodrome en cliquant sur la carte</p>
+        </div>
+
+        <div class="col-xs-2">
+          <label for="latitude">Latitude : </label>
+        </div>
+        <div class="col-xs-10">
           <input class="form-control" id="latitude" type="text" placeholder="latitude" disabled>
+        </div>
+
+        <div class="col-xs-2">
+          <label for="longitude">Longitude : </label>
+        </div>
+
+        <div class="col-xs-10">
           <input class="form-control" id="longitude" type="text" placeholder="longitude" disabled>
         </div>
+
       </div>
+      
     </form>
+
+    <!-- Pour ajouter la carte dans la page -->
     <div class="form-group row">
       <div class="col-xs-12">
         <div id="mapid"></div>
       </div>
     </div>
+
+    <!-- Pour le bouton -->
+    <div class="form-group row">
+      <div class="col-xs-12">
+        <button type="button" class="btn btn-primary">Ajouter</button>
+      </div>
+    </div>
+
   </div>
 </body>
 
