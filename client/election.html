@@ -8,6 +8,13 @@
   <link rel="stylesheet" href="leaflet/leaflet.css" />
   <script src="leaflet/leaflet.js"></script>
   <script type="text/javascript" src="jquery-latest.min.js"></script>
+  <!-- groupedlayercontrol -->
+  <script src='leaflet-groupedlayercontrol-0.6.0/dist/leaflet.groupedlayercontrol.min.js'></script>
+  <link rel="stylesheet" href="leaflet-groupedlayercontrol-0.6.0/dist/leaflet.groupedlayercontrol.min.css">
+  <!--  -->
+  <!-- choropleth -->
+  <script src="leaflet-choropleth-1.1.3/dist/choropleth.js"></script>
+  <!--  -->
   <style>
   #mapid {
     height: 720px;
@@ -29,9 +36,9 @@
   function getWinnerColor(feature) {
 
     let voices = [
-      [feature.properties.nb_abstentions + feature.properties.nb_blancs, 'orange'],
+      [feature.properties.nb_abstentions + feature.properties.nb_blancs, '#d95f02'],
       [feature.properties.nb_voix_1, '#666666'],
-      [feature.properties.nb_voix_2, 'blue']
+      [feature.properties.nb_voix_2, '#7570b3']
     ];
 
     voices.sort((a, b) => {
@@ -58,22 +65,30 @@
       url: "election",
       success: function(data, textStatus, jqXHR) {
 
-        function style(feature) {
+        function styleCommon() {
+
           return {
-            fillColor: getWinnerColor(feature),
             weight: 2,
             opacity: 1,
             color: 'white',
             dashArray: '3',
             fillOpacity: 0.7
           };
+
+        }
+
+        function style(feature) {
+
+          let styleObject = styleCommon();
+          styleObject.fillColor = getWinnerColor(feature);
+
+          return styleObject;
         }
 
         let geojson;
+        let geojsonDensity;
 
-
-        function highlightFeature(e) {
-          let layer = e.target;
+        function highlight(layer) {
 
           layer.setStyle({
             weight: 5,
@@ -85,12 +100,35 @@
           if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
             layer.bringToFront();
           }
+        }
+
+        function highlightFeature(e) {
+
+          let layer = e.target;
+
+          highlight(layer);
 
           info.update(layer.feature.properties);
         }
 
+        function highlightFeatureDensity(e) {
+
+          let layer = e.target;
+
+          highlight(layer)
+
+          info.updateDensity(layer.feature.properties);
+        }
+
+
+
         function resetHighlight(e) {
           geojson.resetStyle(e.target);
+          info.update();
+        }
+
+        function resetHighlightDensity(e) {
+          geojsonDensity.resetStyle(e.target);
           info.update();
         }
 
@@ -107,11 +145,46 @@
 
         }
 
+        function onEachFeatureDensity(feature, layer) {
+          layer.on({
+            mouseover: highlightFeatureDensity,
+            mouseout: resetHighlightDensity,
+            click: zoomToFeature
+          });
+
+        }
+
         geojson = L.geoJson(data, {
           style: style,
           onEachFeature: onEachFeature
         }).addTo(map);
 
+        geojsonDensity = L.choropleth(data, {
+          valueProperty: (feature) => {
+            let props = feature.properties;
+            return props.nb_inscrits / props.squareMeters;
+          }, // which property in the features to use
+          scale: ['#ffffcc', '#005a32'], // chroma.js scale - include as many as you like
+          steps: 7, // number of breaks or steps in range
+          mode: 'q', // q for quantile, e for equidistant, k for k-means
+          style: styleCommon,
+          onEachFeature: onEachFeatureDensity
+        });
+
+
+        let overlayMaps = {
+          'données': {}
+        };
+
+        overlayMaps['données']['candidat en tête'] = geojson;
+        overlayMaps['données']['densité d\'inscrits'] = geojsonDensity;
+
+        let options = {
+          // Make the "données" group exclusive (use radio inputs)
+          exclusiveGroups: ['données']
+        };
+
+        L.control.groupedLayers(null, overlayMaps, options).addTo(map);
 
         let info = L.control();
 
@@ -136,11 +209,23 @@
             div.append('<b>Blancs et abstention : </b>' + blancsEtAbstention + ' - ' + percent(blancsEtAbstention, total)).append($('<br>'));
             div.append('<b>Macron : </b>' + props.nb_voix_1 + ' - ' + percent(props.nb_voix_1, total)).append($('<br>'));
             div.append('<b>Lepen : </b>' + props.nb_voix_2 + ' - ' + percent(props.nb_voix_2, total)).append($('<br>'));
-            div.append($('<br>')).append('<b>Area : </b>' + Math.round(props.squareMeters / 10000) + ' ha').append($('<br>'));
-            div.append(Math.round(props.nb_inscrits * 1000000 / props.squareMeters) + ' inscrits / km').append($('<sup>').text('2')).append($('<br>'));
 
           } else
             div.append('passer la souris sur une zone');
+
+        };
+
+        info.updateDensity = function(props) {
+
+          let div = $(this._div);
+
+          div.html('<h4>densité electeurs</h4>');
+
+          let total = props.nb_inscrits - props.nb_nuls;
+          let blancsEtAbstention = props.nb_abstentions + props.nb_blancs;
+
+          div.append('<b>Area : </b>' + Math.round(props.squareMeters / 10000) + ' ha').append($('<br>'));
+          div.append(Math.round(props.nb_inscrits * 1000000 / props.squareMeters) + ' inscrits / km').append($('<sup>').text('2')).append($('<br>'));
 
         };
 
