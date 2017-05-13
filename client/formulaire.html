@@ -21,6 +21,7 @@
    			#mapid {
     			height: 720px;
   					}
+
   		</style>
 
    		<script type="text/javascript">
@@ -35,28 +36,53 @@
       id: 'mapbox.streets',
       accessToken: 'pk.eyJ1IjoibXJmcmVlemUiLCJhIjoiY2owNWg2a2kyMDA2cjMycGZndzA2ZzZneCJ9.-wsVwihnGBO41Z9FvV_UAQ'
     }).addTo(map);
-  			});	
+  			
+        let longitude = $('#longitude');
+        let latitude = $('#latitude');
+        let popup = L.popup();
+
+        function onMapClick(e) {
+          popup
+            .setLatLng(e.latlng)
+            .setContent("Vous avez selectionné les coordonnées " + e.latlng.toString())
+            .openOn(map);
+            longitude.val(e.latlng.lng);
+            latitude.val(e.latlng.lat);
+        }
+
+         map.on('click', onMapClick);
+
+         });  
   		</script>
 
 	</head>
 
 
 	<body>
+    <div class="container">
+    
+
 		<form>
 			<!-- Pour le champs index -->
-			<div class="form-group">
+
+			<div class="form-group row">
+      <div class="col-xs-12">
     			<label for="index"> Nom du boulodrome </label>
-    			<input type="text" class="form-control" id="index" placeholder="Nom">
+    			<input type="text" class="form-control" id="index" placeholder="Obligatoire" required>
   			</div>
+      </div>
 
   			<!-- Pour le champs type de petanque -->
-			<div class="form-group">
+			<div class="form-group row">
+      <div class="col-xs-12">
     			<label for="type">Quel type de pétanque y est pratiqué ?</label>
-    			<input type="text" class="form-control" id="type" placeholder="type">
+    			<input type="text" class="form-control" id="type" placeholder="Optionnel">
   			</div>
+      </div>
 
   			<!-- Pour le champs terrain couvert -->
-  			<div class="form-group">
+  			<div class="form-group row">
+        <div class="col-xs-12">
   				<label for="couvert">Le terrain est-il couvert ?</label>
   				<select class="form-control" id="couvert">
   					<option>non renseigné</option>
@@ -64,20 +90,23 @@
   					<option>non</option>
 				</select>
 			</div>
+    </div>
 
   			<!-- Pour les coordonnees du boulodrome -->
-  			<div class="form-group">
+  			<div class="form-group row">
+      <div class="col-xs-4">
   				<label for="couvert">Où se trouve le terrain ?</label>
-  				<input class="form-control" id="disabledInput" type="text" placeholder="latitude" disabled>
-  				<input class="form-control" id="disabledInput" type="text" placeholder="longitude" disabled>
-
-  				
-  				
-
-
+  				<input class="form-control" id="latitude" type="text" placeholder="latitude" disabled>
+  				<input class="form-control" id="longitude" type="text" placeholder="longitude" disabled>
+        </div>
   			</div>	
 
 		</form>
-		<div id="mapid"></div>
+    <div class="form-group row">
+      <div class="col-xs-12">
+		    <div id="mapid"></div>
+      </div>
+    </div>
+  </div>
 	</body>
 </html>	
