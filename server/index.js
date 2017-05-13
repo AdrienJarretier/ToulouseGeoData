@@ -27,44 +27,36 @@ app.get('/patinoires', function(req, res) {
 
   let db = new sqlite3.Database(config.db.database);
 
-  db.serialize(function() {
+  db.all("SELECT * FROM patinoires", function(err, rows) {
 
-    db.all("SELECT * FROM patinoires", function(err, rows) {
+    for (let i = 0; i < rows.length; ++i) {
+      rows[i].coordinates = [rows[i].lng, rows[i].lat];
 
-      for (let i = 0; i < rows.length; ++i) {
-        rows[i].coordinates = [rows[i].lng, rows[i].lat];
-
-        delete rows[i].lng;
-        delete rows[i].lat;
-      }
-      res.send(rows);
-    });
-
+      delete rows[i].lng;
+      delete rows[i].lat;
+    }
+    db.close();
+    res.send(rows);
   });
 
-  db.close();
 });
 
 app.get('/boulodromes', function(req, res) {
 
   let db = new sqlite3.Database(config.db.database);
 
-  db.serialize(function() {
+  db.all("SELECT * FROM boulodromes", function(err, rows) {
 
-    db.all("SELECT * FROM boulodromes", function(err, rows) {
+    for (let i = 0; i < rows.length; ++i) {
+      rows[i].coordinates = [rows[i].lng, rows[i].lat];
 
-      for (let i = 0; i < rows.length; ++i) {
-        rows[i].coordinates = [rows[i].lng, rows[i].lat];
-
-        delete rows[i].lng;
-        delete rows[i].lat;
-      }
-      res.send(rows);
-    });
-
+      delete rows[i].lng;
+      delete rows[i].lat;
+    }
+    db.close();
+    res.send(rows);
   });
 
-  db.close();
 });
 
 app.get('/election', function(req, res) {
