@@ -52,10 +52,13 @@
     map.on('click', onMapClick);
 
     let formulaireAjout = $('#ajoutBoulodrome');
-    formulaireAjout.submit(function( event ) {
-  alert( "Handler for .submit() called." );
-  event.preventDefault();
-});
+    formulaireAjout.submit(function(event) {
+
+      event.preventDefault();
+
+      $.post('addBoulodrome', $('#ajoutBoulodrome').serialize());
+
+    });
 
   });
   </script>

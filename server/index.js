@@ -36,6 +36,7 @@ app.get('/patinoires', function(req, res) {
       delete rows[i].lat;
     }
     db.close();
+    console.log('sending patinoires');
     res.send(rows);
   });
 
@@ -54,6 +55,7 @@ app.get('/boulodromes', function(req, res) {
       delete rows[i].lat;
     }
     db.close();
+    console.log('sending boulodromes');
     res.send(rows);
   });
 
@@ -74,8 +76,18 @@ app.get('/election', function(req, res) {
 
       }
 
+      console.log('sending election');
       res.send(geoJson);
     });
+
+});
+
+app.post('/addBoulodrome', function(req, res) {
+
+  console.log('received');
+  console.log(req.query);
+  console.log('body');
+  console.log(req.body);
 
 });
 
