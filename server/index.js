@@ -10,6 +10,8 @@ Third, strict mode prohibits some syntax likely to be defined in future versions
 const bodyParser = require('body-parser');
 const common = require('./common.js');
 const express = require('express');
+const FeatureCollection = require('./FeatureCollection.js');
+const BoulodromeFeature = require('./BoulodromeFeature.js');
 const geojsonArea = require('geojson-area');
 const sqlite3 = require('sqlite3').verbose();
 
@@ -54,17 +56,19 @@ app.get('/boulodromes', function(req, res) {
   let db = new sqlite3.Database(config.db.database);
 
   db.all("SELECT * FROM boulodromes", function(err, rows) {
-    console.log(rows[0]);
 
-    for (let i = 0; i < rows.length; ++i) {
-      rows[i].coordinates = [rows[i].lng, rows[i].lat];
+    let boulodromes = new FeatureCollection([]);
 
-      delete rows[i].lng;
-      delete rows[i].lat;
+    for (let row of rows) {
+      boulodromes.push(new BoulodromeFeature(row));
     }
+
     db.close();
+
     console.log('sending boulodromes');
-    res.send(rows);
+
+    res.send(boulodromes);
+
   });
 
 });
