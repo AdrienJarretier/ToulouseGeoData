@@ -30,6 +30,7 @@
   }
 
   const CANDIDATES_COLORS = ['#d95f02', '#666666', 'blue'];
+  const CHART_WIDTH = 200;
 
   function getWinnerColor(feature) {
 
@@ -260,20 +261,23 @@
 
             let resultsPercent = [{
               name: 'Blancs et abstention',
-              value: percent(blancsEtAbstention, total)
+              value: percent(blancsEtAbstention, total),
+              nb: blancsEtAbstention
             }, {
               name: 'Macron',
-              value: percent(props.nb_voix_1, total)
+              value: percent(props.nb_voix_1, total),
+              nb: props.nb_voix_1
             }, {
               name: 'Lepen',
-              value: percent(props.nb_voix_2, total)
+              value: percent(props.nb_voix_2, total),
+              nb: props.nb_voix_2
             }];
 
             let x = d3.scaleLinear()
               .domain([0, d3.max(resultsPercent, (d) => {
                 return d.value;
               })])
-              .range([0, 300]);
+              .range([0, CHART_WIDTH]);
 
             d3.select("#resultsChart")
               .selectAll("div")
@@ -281,7 +285,7 @@
               .enter()
               .append("b")
               .text((d) => {
-                return d.name;
+                return d.name + ' - ' + d.nb;
               })
               .append("div")
               .style("width", function(d) {
@@ -293,10 +297,6 @@
               .text(function(d) {
                 return d.value + '%';
               });
-
-            // div.append('<b>Blancs et abstention : </b>' + blancsEtAbstention + ' - ' + percent(blancsEtAbstention, total)).append($('<br>'));
-            // div.append('<b>Macron : </b>' + props.nb_voix_1 + ' - ' + percent(props.nb_voix_1, total)).append($('<br>'));
-            // div.append('<b>Lepen : </b>' + props.nb_voix_2 + ' - ' + percent(props.nb_voix_2, total)).append($('<br>'));
 
           } else
             div.append('passer la souris sur une zone');
