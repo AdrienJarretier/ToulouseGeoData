@@ -121,7 +121,9 @@
     let popup = L.popup();
 
     // fonction pour récupérer les coordonnées au clic de la souris sur la carte
+    let clicked = false;
     function onMapClick(e) {
+      clicked = true;
       popup
         .setLatLng(e.latlng)
         .setContent("Vous avez selectionné les coordonnées : (" + e.latlng.lat.toString() + ", " + e.latlng.lng.toString() + ")")
@@ -134,12 +136,21 @@
 
     $("#ajoutBoulodrome").on("submit", function(event) {
       event.preventDefault();
-      $.post('addBoulodrome', $(this).serialize());
 
-    },
-    function(data, textStatus, jqXHR){
-      boulodromesLayer.addData(data);
-    } );
+      if(clicked){
+      $.post('addBoulodrome', $(this).serialize(),
+        function(data, textStatus, jqXHR) {
+          boulodromesLayer.addData(data);
+          clicked = false;
+          document.getElementById("ajoutBoulodrome").reset();
+          popup.remove();
+        });
+      }
+      else{
+        console.log("alerte");
+      }
+
+    });
 
 
   });
