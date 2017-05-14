@@ -86,13 +86,14 @@
       }
     };
 
+    let boulodromesLayer;
     $.ajax({
       type: "GET",
       dataType: "json",
       url: "boulodromes",
       success: function(data, textStatus, jqXHR) {
         console.log(data);
-        let boulodromesLayer = L.geoJSON(data, {
+        boulodromesLayer = L.geoJSON(data, {
           onEachFeature: function(feature, marker) {
             let prop = feature.properties;
             let geo = feature.geometry;
@@ -134,7 +135,11 @@
     $("#ajoutBoulodrome").on("submit", function(event) {
       event.preventDefault();
       $.post('addBoulodrome', $(this).serialize());
-    });
+
+    },
+    function(data, textStatus, jqXHR){
+      boulodromesLayer.addData(data);
+    } );
 
 
   });
