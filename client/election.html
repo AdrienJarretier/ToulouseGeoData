@@ -15,6 +15,7 @@
   <!-- choropleth -->
   <script src="leaflet-choropleth-1.1.3/dist/choropleth.js"></script>
   <!--  -->
+  <script src="d3/d3.min.js"></script>
   <script type="text/javascript">
   'use strict';
 
@@ -24,7 +25,7 @@
 
   function percent(count, total) {
 
-    return Math.round(count * 1000 / total) / 10 + ' %';
+    return Math.round(count * 1000 / total) / 10;
 
   }
 
@@ -211,7 +212,6 @@
 
           div.append($('<h3>').html('Densité d\'électeurs ( km<sup>2</sup> )'));
 
-
           for (let i = 0; i < colors.length; ++i) {
 
             limits[i + 1] = Math.round(limits[i + 1] * 1000000);
@@ -219,10 +219,6 @@
             div.append($('<i>').css('background', colors[i])).append(limits[i] + ' - ' + limits[i + 1]).append($('<br>'));
 
           }
-
-
-
-
 
         });
 
@@ -257,12 +253,50 @@
 
           if (props) {
 
+            div.append($('<div id="resultsChart">'));
+
             let total = props.nb_inscrits - props.nb_nuls;
             let blancsEtAbstention = props.nb_abstentions + props.nb_blancs;
 
-            div.append('<b>Blancs et abstention : </b>' + blancsEtAbstention + ' - ' + percent(blancsEtAbstention, total)).append($('<br>'));
-            div.append('<b>Macron : </b>' + props.nb_voix_1 + ' - ' + percent(props.nb_voix_1, total)).append($('<br>'));
-            div.append('<b>Lepen : </b>' + props.nb_voix_2 + ' - ' + percent(props.nb_voix_2, total)).append($('<br>'));
+            let resultsPercent = [{
+              name: 'Blancs et abstention',
+              value: percent(blancsEtAbstention, total)
+            }, {
+              name: 'Macron',
+              value: percent(props.nb_voix_1, total)
+            }, {
+              name: 'Lepen',
+              value: percent(props.nb_voix_2, total)
+            }];
+
+            let x = d3.scaleLinear()
+              .domain([0, d3.max(resultsPercent, (d) => {
+                return d.value;
+              })])
+              .range([0, 300]);
+
+            d3.select("#resultsChart")
+              .selectAll("div")
+              .data(resultsPercent)
+              .enter()
+              .append("b")
+              .text((d) => {
+                return d.name;
+              })
+              .append("div")
+              .style("width", function(d) {
+                return x(d.value) + "px";
+              })
+              .style("background-color", function(d, i) {
+                return CANDIDATES_COLORS[i];
+              })
+              .text(function(d) {
+                return d.value + '%';
+              });
+
+            // div.append('<b>Blancs et abstention : </b>' + blancsEtAbstention + ' - ' + percent(blancsEtAbstention, total)).append($('<br>'));
+            // div.append('<b>Macron : </b>' + props.nb_voix_1 + ' - ' + percent(props.nb_voix_1, total)).append($('<br>'));
+            // div.append('<b>Lepen : </b>' + props.nb_voix_2 + ' - ' + percent(props.nb_voix_2, total)).append($('<br>'));
 
           } else
             div.append('passer la souris sur une zone');
