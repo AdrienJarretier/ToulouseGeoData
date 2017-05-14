@@ -151,10 +151,43 @@
 
         }
 
+
+
+        let legend = L.control({
+          position: 'bottomright'
+        });
+
+        legend.onAdd = function(map) {
+
+          let div = L.DomUtil.create('div', 'info legend');
+
+          $(div).append($('<h3>').text('Candidat en tête'));
+          $(div).append($('<i>').css('background', CANDIDATES_COLORS[0])).append('Blancs et abstention').append($('<br>'));
+          $(div).append($('<i>').css('background', CANDIDATES_COLORS[1])).append('Macron').append($('<br>'));
+          $(div).append($('<i>').css('background', CANDIDATES_COLORS[2])).append('Lepen').append($('<br>'));
+
+          return div;
+        };
+
+        legend.addTo(map);
+
+
+
         geojson = L.geoJson(data, {
           style: style,
           onEachFeature: onEachFeature
-        }).addTo(map);
+        }).addTo(map).on('add', () => {
+
+          let div = $(legend.getContainer());
+
+          div.empty();
+
+          div.append($('<h3>').text('Candidat en tête'));
+          div.append($('<i>').css('background', CANDIDATES_COLORS[0])).append('Blancs et abstention').append($('<br>'));
+          div.append($('<i>').css('background', CANDIDATES_COLORS[1])).append('Macron').append($('<br>'));
+          div.append($('<i>').css('background', CANDIDATES_COLORS[2])).append('Lepen').append($('<br>'));
+
+        });
 
         geojsonDensity = L.choropleth(data, {
           valueProperty: (feature) => {
@@ -166,8 +199,32 @@
           mode: 'q', // q for quantile, e for equidistant, k for k-means
           style: styleCommon,
           onEachFeature: onEachFeatureDensity
-        });
+        }).on('add', (e) => {
 
+          let div = $(legend.getContainer());
+
+          div.empty();
+
+          let limits = e.target.options.limits.slice();
+          limits.unshift(0);
+          let colors = e.target.options.colors;
+
+          div.append($('<h3>').html('Densité d\'électeurs ( km<sup>2</sup> )'));
+
+
+          for (let i = 0; i < colors.length; ++i) {
+
+            limits[i + 1] = Math.round(limits[i + 1] * 1000000);
+
+            div.append($('<i>').css('background', colors[i])).append(limits[i] + ' - ' + limits[i + 1]).append($('<br>'));
+
+          }
+
+
+
+
+
+        });
 
         let overlayMaps = {
           'données': {}
@@ -227,25 +284,6 @@
         };
 
         info.addTo(map);
-
-        let legend = L.control({
-          position: 'bottomright'
-        });
-
-        legend.onAdd = function(map) {
-
-          let div = L.DomUtil.create('div', 'info legend');
-
-          $(div).append($('<h3>').text('Candidat en tête'));
-          $(div).append($('<i>').css('background', CANDIDATES_COLORS[0])).append('Blancs et abstention').append($('<br>'));
-          $(div).append($('<i>').css('background', CANDIDATES_COLORS[1])).append('Macron').append($('<br>'));
-          $(div).append($('<i>').css('background', CANDIDATES_COLORS[2])).append('Lepen').append($('<br>'));
-
-          return div;
-        };
-
-        legend.addTo(map);
-
 
       },
       error: function(jqXHR, textStatus, errorThrown) {
