@@ -97,7 +97,7 @@ app.get('/election', function(req, res) {
 app.post('/addBoulodrome', function(req, res) {
   let db = new sqlite3.Database(config.db.database);
 
-  let stmt = db.prepare("INSERT INTO boulodromes(lng, lat, nom, couvert, type_petanque) VALUES (?, ?, ?, ?, ?, ?)");
+  let stmt = db.prepare("INSERT INTO boulodromes(lng, lat, nom, couvert, type_petanque) VALUES (?, ?, ?, ?, ?)");
   let data = req.body;
   stmt.run(data.longitude, data.latitude, data.index, data.couvert, data.type);
   stmt.finalize();
