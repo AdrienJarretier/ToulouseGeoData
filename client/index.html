@@ -27,13 +27,6 @@
 
     let mapForm = L.map('mapForm').setView([43.6, 1.44], 13);
 
-    let baseLayer= L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-      maxZoom: 18,
-      id: 'mapbox.streets',
-      accessToken: 'pk.eyJ1IjoibXJmcmVlemUiLCJhIjoiY2owNWg2a2kyMDA2cjMycGZndzA2ZzZneCJ9.-wsVwihnGBO41Z9FvV_UAQ'
-    });
-
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
       maxZoom: 18,
@@ -41,90 +34,107 @@
       accessToken: 'pk.eyJ1IjoibXJmcmVlemUiLCJhIjoiY2owNWg2a2kyMDA2cjMycGZndzA2ZzZneCJ9.-wsVwihnGBO41Z9FvV_UAQ'
     }).addTo(mapBoulodrome);
 
-    // $.ajax({
-    //   type: "GET",
-    //   dataType: "json",
-    //   url: "patinoires",
-    //   success: function(data, textStatus, jqXHR) {
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox.streets',
+      accessToken: 'pk.eyJ1IjoibXJmcmVlemUiLCJhIjoiY2owNWg2a2kyMDA2cjMycGZndzA2ZzZneCJ9.-wsVwihnGBO41Z9FvV_UAQ'
+    }).addTo(mapForm);
 
-    //     console.log(data);
-    //     L.geoJSON(data).addTo(mapBoulodromes);
+    $("a[href='#boulodromes']").on('shown.bs.tab', function(e) {
+      mapBoulodrome.invalidateSize();
+    });
 
-    //   },
-    //   error: function(jqXHR, textStatus, errorThrown) {
-    //     console.log("error : ");
-    //     console.log(textStatus);
-    //     console.log(errorThrown);
-    //   }
-    // });
+    $("a[href='#ajout']").on('shown.bs.tab', function(e) {
+      mapForm.invalidateSize();
+    });
 
-    // function ouiNon(mot) {
-    //   if (mot == "O") {
-    //     return "oui"
-    //   }
-    //   if (mot == "N") {
-    //     return "non"
-    //   }
-    //   if (mot == "O/N") {
-    //     return "indeterminé"
-    //   }
-    // };
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "patinoires",
+      success: function(data, textStatus, jqXHR) {
 
-    // function typePetanque(mot) {
-    //   if (mot == "") {
-    //     return "non défini"
-    //   } else {
-    //     return mot
-    //   }
-    // };
+        console.log(data);
+        L.geoJSON(data).addTo(mapBoulodrome);
 
-    // $.ajax({
-    //   type: "GET",
-    //   dataType: "json",
-    //   url: "boulodromes",
-    //   success: function(data, textStatus, jqXHR) {
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log("error : ");
+        console.log(textStatus);
+        console.log(errorThrown);
+      }
+    });
 
-    //     let boulodromesLayer = L.geoJSON(data, {
-    //       onEachFeature: function(data, marker) {
-    //         marker.bindPopup(
-    //           "<font face='georgia'>Nom du terrain : </font>" + data.nom + "</br>" +
-    //           "<font face='georgia'>Terrain couvert : </font>" + ouiNon(data.couvert) + "</br>" +
-    //           "<font face='georgia'>Type de pétanque pratiquée : </font>" + typePetanque(data.type_petanque) + "</br>" +
-    //           "<font face='georgia'>Cordonnées du terrain : </font>" + "</br>" + data.coordinates[0] + " , " + data.coordinates[1]
-    //         );
-    //       }
-    //     }).addTo(mapBoulodromes);
+    function ouiNon(mot) {
+      if (mot == "O") {
+        return "oui"
+      }
+      if (mot == "N") {
+        return "non"
+      }
+      if (mot == "O/N") {
+        return "indeterminé"
+      }
+    };
 
-    //   },
-    //   error: function(jqXHR, textStatus, errorThrown) {
-    //     console.log("error : ");
-    //     console.log(textStatus);
-    //     console.log(errorThrown);
-    //   }
-    // });
+    function typePetanque(mot) {
+      if (mot == "") {
+        return "non défini"
+      } else {
+        return mot
+      }
+    };
+
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "boulodromes",
+      success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        let boulodromesLayer = L.geoJSON(data, {
+          onEachFeature: function(feature, marker) {
+            let prop = feature.properties;
+            let geo = feature.geometry;
+            marker.bindPopup(
+              "<font face='georgia'>Nom du terrain : </font>" + prop.nom + "</br>" +
+              "<font face='georgia'>Terrain couvert : </font>" + ouiNon(prop.couvert) + "</br>" +
+              "<font face='georgia'>Type de pétanque pratiquée : </font>" + typePetanque(prop.type_petanque) + "</br>" +
+              "<font face='georgia'>Cordonnées du terrain : </font>" + "</br>" + geo.coordinates[0] + " , " + geo.coordinates[1]
+            );
+          }
+        }).addTo(mapBoulodrome);
+
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log("error : ");
+        console.log(textStatus);
+        console.log(errorThrown);
+      }
+    });
 
 
-    // // Pour la carte du formulaire
-    // let longitude = $('#longitude');
-    // let latitude = $('#latitude');
-    // let popup = L.popup();
+    // Pour la carte du formulaire
+    let longitude = $('#longitude');
+    let latitude = $('#latitude');
+    let popup = L.popup();
 
-    // // fonction pour récupérer les coordonnées au clic de la souris sur la carte
-    // function onMapClick(e) {
-    //   popup
-    //     .setLatLng(e.latlng)
-    //     .setContent("Vous avez selectionné les coordonnées : (" + e.latlng.lat.toString() + ", " + e.latlng.lng.toString() + ")")
-    //     .openOn(map);
-    //   longitude.val(e.latlng.lng);
-    //   latitude.val(e.latlng.lat);
-    // }
+    // fonction pour récupérer les coordonnées au clic de la souris sur la carte
+    function onMapClick(e) {
+      popup
+        .setLatLng(e.latlng)
+        .setContent("Vous avez selectionné les coordonnées : (" + e.latlng.lat.toString() + ", " + e.latlng.lng.toString() + ")")
+        .openOn(mapForm);
+      longitude.val(e.latlng.lng);
+      latitude.val(e.latlng.lat);
+    }
 
-    // mapFormulaire.on('click', onMapClick);
+    mapForm.on('click', onMapClick);
 
-    // $("#ajoutBoulodrome").on("submit", function(event) {
-    //   event.preventDefault();
-    //   $.post('addBoulodrome', $(this).serialize());
-    // });
+    $("#ajoutBoulodrome").on("submit", function(event) {
+      event.preventDefault();
+      $.post('addBoulodrome', $(this).serialize());
+    });
 
 
   });
@@ -147,70 +157,60 @@
       <!-- contenu onglet formulaire -->
       <div id="ajout" class="tab-pane fade">
         <!-- Pour ajouter la carte dans la page -->
-                  <div class="container">
-
-
-            <form id="ajoutBoulodrome">
-              <!-- Pour le champs index -->
-              <div class="form-group row">
-                <div class="col-xs-12">
-                  <label for="index"> Nom du boulodrome </label>
-                  <input name="index" type="text" class="form-control" id="index" placeholder="Obligatoire" required>
-                </div>
+        <div class="container">
+          <form id="ajoutBoulodrome">
+            <!-- Pour le champs index -->
+            <div class="form-group row">
+              <div class="col-xs-12">
+                <label for="index"> Nom du boulodrome </label>
+                <input name="index" type="text" class="form-control" id="index" placeholder="Obligatoire" required>
               </div>
-              <!-- Pour le champs type de petanque -->
-              <div class="form-group row">
-                <div class="col-xs-12">
-                  <label for="type">Quel type de pétanque y est pratiqué ?</label>
-                  <input name="type" type="text" class="form-control" id="type" placeholder="Optionnel">
-                </div>
+            </div>
+            <!-- Pour le champs type de petanque -->
+            <div class="form-group row">
+              <div class="col-xs-12">
+                <label for="type">Quel type de pétanque y est pratiqué ?</label>
+                <input name="type" type="text" class="form-control" id="type" placeholder="Optionnel">
               </div>
-
-
-              <!-- Pour le champs terrain couvert -->
-              <div class="form-group row">
-                <div class="col-xs-12">
-                  <label for="couvert">Le terrain est-il couvert ?</label>
-                  <select name="couvert" class="form-control" id="couvert">
-                    <option>non renseigné</option>
-                    <option>oui</option>
-                    <option>non</option>
-                  </select>
-                </div>
+            </div>
+            <!-- Pour le champs terrain couvert -->
+            <div class="form-group row">
+              <div class="col-xs-12">
+                <label for="couvert">Le terrain est-il couvert ?</label>
+                <select name="couvert" class="form-control" id="couvert">
+                  <option>non renseigné</option>
+                  <option>oui</option>
+                  <option>non</option>
+                </select>
               </div>
-
-
-              <!-- Pour les coordonnees du boulodrome -->
-              <div class="form-group row">
-                <div class="col-xs-12">
-                  <label>Où se trouve le terrain ?</label>
-                  <p>Indiquer l'endroit où se trouve le boulodrome en cliquant sur la carte</p>
-                </div>
-                <div class="col-xs-2">
-                  <label for="latitude">Latitude : </label>
-                </div>
-                <div class="col-xs-8">
-                  <input name="latitude" class="form-control" id="latitude" type="text" placeholder="latitude" readonly>
-                </div>
+            </div>
+            <!-- Pour les coordonnees du boulodrome -->
+            <div class="form-group row">
+              <div class="col-xs-12">
+                <label>Où se trouve le terrain ?</label>
+                <p>Indiquer l'endroit où se trouve le boulodrome en cliquant sur la carte</p>
               </div>
-
-              <div class="form-group row">
-                <div class="col-xs-2">
-                  <label for="longitude">Longitude : </label>
-                </div>
-                <div class="col-xs-8">
-                  <input name="longitude" class="form-control" id="longitude" type="text" placeholder="longitude" readonly>
-                </div>
-                <div class="col-xs-2">
-                  <button type="submit" class="btn btn-primary">Ajouter</button>
-                </div>
+              <div class="col-xs-2">
+                <label for="latitude">Latitude : </label>
               </div>
-              
-          </div>
-          </form>
-          
+              <div class="col-xs-8">
+                <input name="latitude" class="form-control" id="latitude" type="text" placeholder="latitude" readonly>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-xs-2">
+                <label for="longitude">Longitude : </label>
+              </div>
+              <div class="col-xs-8">
+                <input name="longitude" class="form-control" id="longitude" type="text" placeholder="longitude" readonly>
+              </div>
+              <div class="col-xs-2">
+                <button type="submit" class="btn btn-primary">Ajouter</button>
+              </div>
+            </div>
+        </div>
+        </form>
         <div id="mapForm"></div>
-      </div>
       </div>
       <div id="election" class="tab-pane fade">
         <p>
