@@ -76,12 +76,12 @@ function fillBoulodromes() {
 
         db.run("CREATE TABLE IF NOT EXISTS boulodromes (id INTEGER PRIMARY KEY, type TEXT, lng REAL, lat REAL, nom TEXT, couvert TEXT, type_petanque TEXT)");
 
-        let stmt = db.prepare("INSERT INTO boulodromes VALUES (?, ?, ?, ?, ?, ?, ?)");
+        let stmt = db.prepare("INSERT INTO boulodromes(type, lng, lat, nom, couvert, type_petanque) VALUES (?, ?, ?, ?, ?, ?)");
 
         for (let i = 1; i < dataArray.length; ++i) {
 
           let geoShape = JSON.parse(dataArray[i][1]);
-          stmt.run(i, geoShape.type, geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
+          stmt.run(geoShape.type, geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
 
         }
         stmt.finalize();
