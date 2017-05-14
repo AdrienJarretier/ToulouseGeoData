@@ -74,9 +74,9 @@ function fillBoulodromes() {
 
       db.serialize(function() {
 
-        db.run("CREATE TABLE IF NOT EXISTS boulodromes (id INTEGER PRIMARY KEY, type TEXT, lng REAL, lat REAL, nom TEXT, couvert TEXT, type_petanque TEXT)");
+        db.run("CREATE TABLE IF NOT EXISTS boulodromes (id INTEGER PRIMARY KEY, lng REAL, lat REAL, nom TEXT, couvert TEXT, type_petanque TEXT)");
 
-        let stmt = db.prepare("INSERT INTO boulodromes(type, lng, lat, nom, couvert, type_petanque) VALUES (?, ?, ?, ?, ?, ?)");
+        let stmt = db.prepare("INSERT INTO boulodromes(lng, lat, nom, couvert, type_petanque) VALUES (?, ?, ?, ?, ?)");
 
         for (let i = 1; i < dataArray.length; ++i) {
 

@@ -54,6 +54,7 @@ app.get('/boulodromes', function(req, res) {
   let db = new sqlite3.Database(config.db.database);
 
   db.all("SELECT * FROM boulodromes", function(err, rows) {
+    console.log(rows[0]);
 
     for (let i = 0; i < rows.length; ++i) {
       rows[i].coordinates = [rows[i].lng, rows[i].lat];
@@ -92,9 +93,9 @@ app.get('/election', function(req, res) {
 app.post('/addBoulodrome', function(req, res) {
   let db = new sqlite3.Database(config.db.database);
 
-  let stmt = db.prepare("INSERT INTO boulodromes(type, lng, lat, nom, couvert, type_petanque) VALUES (?, ?, ?, ?, ?, ?)");
+  let stmt = db.prepare("INSERT INTO boulodromes(lng, lat, nom, couvert, type_petanque) VALUES (?, ?, ?, ?, ?, ?)");
   let data = req.body;
-  stmt.run("Point", data.longitude, data.latitude, data.index, data.couvert, data.type);
+  stmt.run(data.longitude, data.latitude, data.index, data.couvert, data.type);
   stmt.finalize();
 
   db.close();
