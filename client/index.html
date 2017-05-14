@@ -23,6 +23,7 @@
   'use strict';
 
   $(document).ready(function() {
+    $('#erreur').hide();
     let mapBoulodrome = L.map('mapBoulodrome').setView([43.6, 1.44], 13);
 
     let mapForm = L.map('mapForm').setView([43.6, 1.44], 13);
@@ -122,6 +123,7 @@
 
     // fonction pour récupérer les coordonnées au clic de la souris sur la carte
     let clicked = false;
+
     function onMapClick(e) {
       clicked = true;
       popup
@@ -137,17 +139,16 @@
     $("#ajoutBoulodrome").on("submit", function(event) {
       event.preventDefault();
 
-      if(clicked){
-      $.post('addBoulodrome', $(this).serialize(),
-        function(data, textStatus, jqXHR) {
-          boulodromesLayer.addData(data);
-          clicked = false;
-          document.getElementById("ajoutBoulodrome").reset();
-          popup.remove();
-        });
-      }
-      else{
-        console.log("alerte");
+      if (clicked) {
+        $.post('addBoulodrome', $(this).serialize(),
+          function(data, textStatus, jqXHR) {
+            boulodromesLayer.addData(data);
+            clicked = false;
+            document.getElementById("ajoutBoulodrome").reset();
+            popup.remove();
+          });
+      } else {
+        $('#erreur').show();
       }
 
     });
@@ -206,6 +207,11 @@
                 <label>Où se trouve le terrain ?</label>
                 <p>Indiquer l'endroit où se trouve le boulodrome en cliquant sur la carte</p>
               </div>
+              <div class="form-group row">
+              <div class="col-xs-12">
+                <div class="alert alert-danger" role="alert" id="erreur">Veuillez indiquer où se trouve le boulodrome</div>
+              </div>
+            </div>
               <div class="col-xs-2">
                 <label for="latitude">Latitude : </label>
               </div>
