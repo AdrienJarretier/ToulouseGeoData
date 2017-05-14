@@ -28,12 +28,14 @@
 
   }
 
+  const CANDIDATES_COLORS = ['#d95f02', '#666666', 'blue'];
+
   function getWinnerColor(feature) {
 
     let voices = [
-      [feature.properties.nb_abstentions + feature.properties.nb_blancs, '#d95f02'],
-      [feature.properties.nb_voix_1, '#666666'],
-      [feature.properties.nb_voix_2, '#7570b3']
+      [feature.properties.nb_abstentions + feature.properties.nb_blancs, CANDIDATES_COLORS[0]],
+      [feature.properties.nb_voix_1, CANDIDATES_COLORS[1]],
+      [feature.properties.nb_voix_2, CANDIDATES_COLORS[2]]
     ];
 
     voices.sort((a, b) => {
@@ -235,9 +237,9 @@
           let div = L.DomUtil.create('div', 'info legend');
 
           $(div).append($('<h3>').text('Candidat en tête'));
-          $(div).append($('<i>').css('background', 'orange')).append('Blancs et abstention').append($('<br>'));
-          $(div).append($('<i>').css('background', '#666666')).append('Macron').append($('<br>'));
-          $(div).append($('<i>').css('background', 'blue')).append('Lepen').append($('<br>'));
+          $(div).append($('<i>').css('background', CANDIDATES_COLORS[0])).append('Blancs et abstention').append($('<br>'));
+          $(div).append($('<i>').css('background', CANDIDATES_COLORS[1])).append('Macron').append($('<br>'));
+          $(div).append($('<i>').css('background', CANDIDATES_COLORS[2])).append('Lepen').append($('<br>'));
 
           return div;
         };
