@@ -64,7 +64,21 @@
       success: function(data, textStatus, jqXHR) {
 
         console.log(data);
-        L.geoJSON(data).addTo(mapBoulodrome);
+        L.geoJSON(data, {
+          pointToLayer: function(feature, latlng) {
+
+            let patMarker = L.AwesomeMarkers.icon({
+              icon: 'ios-snowy',
+              markerColor: 'blue',
+              iconColor: 'white'
+            });
+
+            return L.marker(latlng, {
+              icon: patMarker
+            });
+
+          }
+        }).addTo(mapBoulodrome);
 
       },
       error: function(jqXHR, textStatus, errorThrown) {
