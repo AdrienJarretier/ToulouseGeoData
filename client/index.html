@@ -186,6 +186,8 @@
 
     mapForm.on('click', onMapClick);
 
+    let formBoulodromesLayer = L.geoJSON().addTo(mapForm);
+
     $("#ajoutBoulodrome").on("submit", function(event) {
       event.preventDefault();
 
@@ -193,9 +195,11 @@
         $.post('addBoulodrome', $(this).serialize(),
           function(data, textStatus, jqXHR) {
             boulodromesLayer.addData(data);
+            formBoulodromesLayer.addData(data);
             clicked = false;
             document.getElementById("ajoutBoulodrome").reset();
             popup.remove();
+            $('#erreur').hide();
           });
       } else {
         $('#erreur').show();
