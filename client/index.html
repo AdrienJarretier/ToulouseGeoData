@@ -125,14 +125,23 @@
         console.log(data);
         boulodromesLayer = L.geoJSON(data, {
           onEachFeature: function(feature, marker) {
+
             let prop = feature.properties;
             let geo = feature.geometry;
-            marker.bindPopup(
+
+            let div_popup = L.DomUtil.create('div');
+
+            div_popup.innerHTML = '<p>' +
               "<font face='georgia'>Nom du terrain : </font>" + prop.nom + "<br>" +
               "<font face='georgia'>Terrain couvert : </font>" + ouiNon(prop.couvert) + "<br>" +
               "<font face='georgia'>Type de pétanque pratiquée : </font>" + typePetanque(prop.type_petanque) + "<br>" +
-              "<font face='georgia'>Cordonnées du terrain : </font>" + "<br>" + geo.coordinates[0] + " , " + geo.coordinates[1]
-            );
+              "<font face='georgia'>Cordonnées du terrain : </font>" + "<br>" + geo.coordinates[0] + " , " + geo.coordinates[1] + '</p>' +
+              '<a class="deleteBoul" href="#"><i class="icon ion-trash-a" style="font-size:24px"></i></a>';
+            $('a.deleteBoul', div_popup).on('click', function() {
+              console.log('clicked');
+            });
+
+            marker.bindPopup(div_popup);
           },
           pointToLayer: function(feature, latlng) {
 
@@ -165,7 +174,6 @@
         console.log(errorThrown);
       }
     });
-
 
     // Pour la carte du formulaire
     let longitude = $('#longitude');
