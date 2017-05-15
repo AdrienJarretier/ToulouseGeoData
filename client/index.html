@@ -65,6 +65,15 @@
 
         console.log(data);
         L.geoJSON(data, {
+          onEachFeature: function(feature, marker) {
+            let prop = feature.properties;
+            let geo = feature.geometry;
+            marker.bindPopup(
+              "<h4>" + prop.nom_complet + "</h4>" +
+              "<font face='georgia'>adresse : </font>" + prop.adresse + "<br>" +
+              "<font face='georgia'>téléphone : </font>" + prop.telephone + "<br>"
+            );
+          },
           pointToLayer: function(feature, latlng) {
 
             let patMarker = L.AwesomeMarkers.icon({
@@ -118,10 +127,10 @@
             let prop = feature.properties;
             let geo = feature.geometry;
             marker.bindPopup(
-              "<font face='georgia'>Nom du terrain : </font>" + prop.nom + "</br>" +
-              "<font face='georgia'>Terrain couvert : </font>" + ouiNon(prop.couvert) + "</br>" +
-              "<font face='georgia'>Type de pétanque pratiquée : </font>" + typePetanque(prop.type_petanque) + "</br>" +
-              "<font face='georgia'>Cordonnées du terrain : </font>" + "</br>" + geo.coordinates[0] + " , " + geo.coordinates[1]
+              "<font face='georgia'>Nom du terrain : </font>" + prop.nom + "<br>" +
+              "<font face='georgia'>Terrain couvert : </font>" + ouiNon(prop.couvert) + "<br>" +
+              "<font face='georgia'>Type de pétanque pratiquée : </font>" + typePetanque(prop.type_petanque) + "<br>" +
+              "<font face='georgia'>Cordonnées du terrain : </font>" + "<br>" + geo.coordinates[0] + " , " + geo.coordinates[1]
             );
           },
           pointToLayer: function(feature, latlng) {

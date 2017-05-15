@@ -48,13 +48,12 @@ function fillPatinoires() {
 
         db.run("CREATE TABLE IF NOT EXISTS patinoires (id INTEGER PRIMARY KEY, type TEXT, lng REAL, lat REAL, nom_complet TEXT, adresse TEXT, telephone TEXT)");
 
-        let stmt = db.prepare("INSERT INTO patinoires VALUES (?, ?, ?, ?, ?, ?, ?)");
-
+        let stmt = db.prepare("INSERT INTO patinoires(lng, lat, nom_complet, adresse, telephone) VALUES (?, ?, ?, ?, ?)");
 
         for (let i = 1; i < dataArray.length; ++i) {
 
           let geoShape = JSON.parse(dataArray[i][1]);
-          stmt.run(i, geoShape.type, geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
+          stmt.run(geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
 
         }
         stmt.finalize();
@@ -81,7 +80,7 @@ function fillBoulodromes() {
         for (let i = 1; i < dataArray.length; ++i) {
 
           let geoShape = JSON.parse(dataArray[i][1]);
-          stmt.run(geoShape.type, geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
+          stmt.run(geoShape.coordinates[0], geoShape.coordinates[1], dataArray[i][2], dataArray[i][3], dataArray[i][4]);
 
         }
         stmt.finalize();

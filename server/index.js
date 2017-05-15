@@ -12,6 +12,7 @@ const common = require('./common.js');
 const express = require('express');
 const FeatureCollection = require('./FeatureCollection.js');
 const BoulodromeFeature = require('./BoulodromeFeature.js');
+const PatinoireFeature = require('./PatinoireFeature.js');
 const geojsonArea = require('geojson-area');
 const sqlite3 = require('sqlite3').verbose();
 
@@ -38,15 +39,18 @@ app.get('/patinoires', function(req, res) {
 
   db.all("SELECT * FROM patinoires", function(err, rows) {
 
-    for (let i = 0; i < rows.length; ++i) {
-      rows[i].coordinates = [rows[i].lng, rows[i].lat];
+    let patinoires = new FeatureCollection([]);
 
-      delete rows[i].lng;
-      delete rows[i].lat;
+    for (let row of rows) {
+      patinoires.push(new PatinoireFeature(row));
     }
+
     db.close();
+
     console.log('sending patinoires');
-    res.send(rows);
+
+    res.send(patinoires);
+
   });
 
 });
