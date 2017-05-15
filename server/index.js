@@ -103,23 +103,35 @@ app.post('/addBoulodrome', function(req, res) {
 
   let stmt = db.prepare("INSERT INTO boulodromes(lng, lat, nom, couvert, type_petanque) VALUES (?, ?, ?, ?, ?)");
   let data = req.body;
+
   stmt.run([data.longitude, data.latitude, data.index, data.couvert, data.type], function(error) {
 
     stmt.finalize();
 
-    let selectTtmt = db.prepare("SELECT * FROM boulodromes WHERE id=?");
 
-    selectTtmt.get(this.lastID, function(err, row) {
+    if (!error) {
 
-      selectTtmt.finalize();
+      let selectTtmt = db.prepare("SELECT * FROM boulodromes WHERE id=?");
 
-      db.close();
+      selectTtmt.get(this.lastID, function(err, row) {
 
-      let boulodromeFeat = new BoulodromeFeature(row);
+        selectTtmt.finalize();
 
-      res.send(boulodromeFeat);
+        db.close();
 
-    });
+        let boulodromeFeat = new BoulodromeFeature(row);
+
+        res.send(boulodromeFeat);
+
+      });
+
+    } else {
+      console.log("error when trying to insert boulodrome : ");
+      console.log(error);
+
+      res.send(error);
+    }
+
   });
 
 });
