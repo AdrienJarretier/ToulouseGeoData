@@ -24,6 +24,7 @@ you can now open you navigator to http://127.0.0.1:9226/ (if you didn't change t
 
 ## Libs
 
+- Bootstrap
 - Jquery
 - D3js : used to view the results of the election with a bar chart
 - Leaflet : map
