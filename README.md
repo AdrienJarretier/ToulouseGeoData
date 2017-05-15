@@ -25,11 +25,15 @@ you can now open you navigator to http://127.0.0.1:9226/ (if you didn't change t
 ## Libs
 
 - Jquery
+- D3js : used to view the results of the election with a bar chart
 - Leaflet : map
   - awesome-markers : custom markers with **ionicons**
+  - leaflet-choropleth : for the density map
+  - leaflet-groupedlayercontrol : used in election to change overlay
 - Nodejs
   - csv-parse : csv parser
   - express : web framework
+    - body-parser : used to parse the body of a post request
   - geojson-area : calculate the area in m² of a geoJson polygon 
   - sqlite3 : sqLite database
 
