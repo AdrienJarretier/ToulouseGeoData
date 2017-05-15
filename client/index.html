@@ -7,6 +7,10 @@
   <script type="text/javascript" src="jquery-latest.min.js"></script>
   <link rel="stylesheet" href="leaflet/leaflet.css">
   <script src="leaflet/leaflet.js"></script>
+  <!-- groupedlayercontrol -->
+  <script src='leaflet-groupedlayercontrol-0.6.0/dist/leaflet.groupedlayercontrol.min.js'></script>
+  <link rel="stylesheet" href="leaflet-groupedlayercontrol-0.6.0/dist/leaflet.groupedlayercontrol.min.css">
+  <!--  -->
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <!-- Optional theme -->
@@ -58,6 +62,21 @@
 
     L.AwesomeMarkers.Icon.prototype.options.prefix = 'ion';
 
+
+
+
+
+    let overlayMaps = {
+      'données': {}
+    };
+
+    let options = {};
+
+
+    let patinoiresLoaded = false;
+    let boulodromesLoaded = false;
+
+    let patinoiresLayer;
     $.ajax({
       type: "GET",
       dataType: "json",
@@ -65,7 +84,7 @@
       success: function(data, textStatus, jqXHR) {
 
         console.log(data);
-        L.geoJSON(data, {
+        patinoiresLayer = L.geoJSON(data, {
           onEachFeature: function(feature, marker) {
             let prop = feature.properties;
             let geo = feature.geometry;
@@ -89,6 +108,14 @@
 
           }
         }).addTo(mapBoulodrome);
+
+        patinoiresLoaded = true;
+
+
+        overlayMaps['données']['patinoires'] = patinoiresLayer;
+
+        if (boulodromesLoaded)
+          L.control.groupedLayers(null, overlayMaps, options).addTo(mapBoulodrome);
 
       },
       error: function(jqXHR, textStatus, errorThrown) {
@@ -177,6 +204,13 @@
 
         }).addTo(mapBoulodrome);
 
+        boulodromesLoaded = true;
+
+        overlayMaps['données']['boulodromes'] = boulodromesLayer;
+
+
+        if (patinoiresLoaded)
+          L.control.groupedLayers(null, overlayMaps, options).addTo(mapBoulodrome);
       },
       error: function(jqXHR, textStatus, errorThrown) {
         console.log("error : ");
