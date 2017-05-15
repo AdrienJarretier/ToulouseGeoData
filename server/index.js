@@ -129,6 +129,41 @@ app.post('/addBoulodrome', function(req, res) {
       console.log("error when trying to insert boulodrome : ");
       console.log(error);
 
+      db.close();
+
+      res.send(error);
+    }
+
+  });
+
+});
+
+
+
+app.post('/delBoulodrome', function(req, res) {
+
+  let id = req.body.id;
+
+  let db = new sqlite3.Database(config.db.database);
+
+  let stmt = db.prepare("DELETE FROM boulodromes WHERE id=?");
+
+  stmt.run(id, function(error) {
+
+    stmt.finalize();
+
+    if (!error) {
+
+      db.close();
+
+      res.send('ok');
+
+    } else {
+      console.log("error when trying to delete boulodrome " + id);
+      console.log(error);
+
+      db.close();
+
       res.send(error);
     }
 

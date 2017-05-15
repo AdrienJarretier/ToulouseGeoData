@@ -138,7 +138,17 @@
               "<font face='georgia'>Cordonnées du terrain : </font>" + "<br>" + geo.coordinates[0] + " , " + geo.coordinates[1] + '</p>' +
               '<a class="deleteBoul" href="#"><i class="icon ion-trash-a" style="font-size:24px"></i></a>';
             $('a.deleteBoul', div_popup).on('click', function() {
-              console.log('clicked');
+
+              $.post('delBoulodrome', {
+                  id: feature.id
+                },
+                function(data, textStatus, jqXHR) {
+                  if (data == 'ok') {
+                    console.log('deleted');
+                    marker.remove();
+                  }
+                });
+
             });
 
             marker.bindPopup(div_popup);
