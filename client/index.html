@@ -3,9 +3,8 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css" />
   <script type="text/javascript" src="jquery-latest.min.js"></script>
-  <link rel="stylesheet" href="leaflet/leaflet.css" />
+  <link rel="stylesheet" href="leaflet/leaflet.css">
   <script src="leaflet/leaflet.js"></script>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -18,6 +17,7 @@
   <link rel="stylesheet" href="Leaflet.awesome-markers-2.0.2/dist/leaflet.awesome-markers.css">
   <script src="Leaflet.awesome-markers-2.0.2/dist/leaflet.awesome-markers.js"></script>
   <!-- -->
+  <link rel="stylesheet" href="style.css">
   <style>
   #mapForm,
   #mapBoulodrome {
@@ -55,6 +55,8 @@
       mapForm.invalidateSize();
     });
 
+    L.AwesomeMarkers.Icon.prototype.options.prefix = 'ion';
+
     $.ajax({
       type: "GET",
       dataType: "json",
@@ -75,12 +77,10 @@
     function ouiNon(mot) {
       if (mot == "O") {
         return "oui"
-      }
-      if (mot == "N") {
+      } else if (mot == "N") {
         return "non"
-      }
-      if (mot == "O/N") {
-        return "indeterminé"
+      } else {
+        return "indéterminé"
       }
     };
 
@@ -109,7 +109,29 @@
               "<font face='georgia'>Type de pétanque pratiquée : </font>" + typePetanque(prop.type_petanque) + "</br>" +
               "<font face='georgia'>Cordonnées du terrain : </font>" + "</br>" + geo.coordinates[0] + " , " + geo.coordinates[1]
             );
+          },
+          pointToLayer: function(feature, latlng) {
+
+            let iconColor;
+
+            if (feature.properties.couvert == "O")
+              iconColor = '#28e723';
+            else if (feature.properties.couvert == "N")
+              iconColor = '#dddddd';
+            else
+              iconColor = '#dd0000';
+
+            let boulodromeMarker = L.AwesomeMarkers.icon({
+              icon: 'ios-basketball-outline',
+              markerColor: 'cadetblue',
+              iconColor: iconColor
+            });
+
+            return L.marker(latlng, {
+              icon: boulodromeMarker
+            });
           }
+
         }).addTo(mapBoulodrome);
 
       },
