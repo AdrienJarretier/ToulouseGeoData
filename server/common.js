@@ -18,7 +18,7 @@ function readFile(file) {
     fs.open(file, 'r', (err, fd) => {
       fs.readFile(fd, 'utf8', (err, fileContent) => {
 
-        fs.close(fd);
+        fs.closeSync(fd);
 
         resolve(fileContent);
 
