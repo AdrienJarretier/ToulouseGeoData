@@ -14,7 +14,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "body-parser": "^1.17.1",
-    "csv-parse": "^1.2.0",
+    "csv-parse": "^4.4.6",
     "express": "^4.15.2",
     "geojson-area": "^0.2.1",
     "sqlite3": "^5.0.2"
